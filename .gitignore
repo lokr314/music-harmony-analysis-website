@@ -1,6 +1,5 @@
 # build output
-dist/
-.output/
+# I want the build output to be able to put it via git to the uberspace server
 
 # dependencies
 node_modules/
