@@ -1,30 +1,16 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Product from '../components/Product.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Flexbox from '../components/Flexbox.astro';
+import Visible from '../components/Visible.vue';
 ---
 
-<Layout title = 'HONEY'>
+<BaseLayout title = 'HONEY'>
     <div class="flex justify-center items-center h-96 bg-amber-100">
         <div class="flex flex-col justify-center items-center">
-            <h1 class="text-6xl text-amber-800 font-bold">Honey</h1>
-            <p class="text-2xl w-1/2 text-amber-500">Our honey is produced by our own bees. We have a total of 10 hives, which are located in the immediate vicinity of our farm. The honey is harvested in the summer months and is available in different varieties.</p>
+            <h1 class="text-3xl text-amber-800 font-bold">Soli Deo gloria</h1>
+            <p class="text-xl w-1/2 text-amber-500">Soli Deo gloria is a Latin term for Glory to God alone. It has been used by artists like Johann Sebastian Bach, George Frideric Handel, and Christoph Graupner to signify that the work was produced for the sake of praising God. The phrase has become one of the five solae propounded to summarise the Reformers' basic beliefs during the Protestant Reformation. </p>
         </div>
     </div>
-
-    <div class="flex flex-col justify-center items-center">
-        <Product title = 'Blütenhonig'
-            description = 'Der Blütenhonig ist ein sehr aromatischer Honig, der von den Bienen aus den Blüten der verschiedenen Pflanzen gesammelt wird. Er ist sehr aromatisch und hat einen hohen Fruchtzuckergehalt. Er ist sehr beliebt und wird gerne zum Süßen von Tee und Kaffee verwendet.'
-            img_path = '/images/honey_with_flowers.jpg'
-            alt = 'Leckerer Blütenhonig in goldgelber Farbe'>
-        </Product>
-
-        <Product title = 'Lindenblütenhonig'
-            description = 'Der Lindenblütenhonig ist ein sehr aromatischer Honig, der von den Bienen aus den Blüten der Linden gesammelt wird. Er ist sehr aromatisch und hat einen hohen Fruchtzuckergehalt. Er ist sehr beliebt und wird gerne zum Süßen von Tee und Kaffee verwendet.'
-            img_path = '/images/we.jpg'
-            alt = 'Leckerer Lindenblütenhonig in goldgelber Farbe'>
-        </Product>
-    </div>
-</Layout>
-
-<style>
-</style>
+    <Visible client:load />
+    <Flexbox />
+</BaseLayout>
