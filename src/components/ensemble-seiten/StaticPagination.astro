@@ -1,0 +1,19 @@
+---
+// Die Produkte werden aus einer JSON-Datei importiert 
+import products from '../../database/products.json';
+
+export interface Props {
+	productIDs: number[];
+}
+
+const { productIDs } = Astro.props as Props;
+---
+
+<div class="flex flex-wrap justify-starts m-12 gap-60">
+    {productIDs.map((id: number) => (
+      <div class="item w-24 h-24 text-center bg-blue-100 border border-dashed border-blue-800">
+        <h2 class="text-lg font-bold">{products.find(product => product.id == id).title}</h2>
+        <p>{products.find(product => product.id == id).text}</p>
+      </div>
+    ))}
+</div>
