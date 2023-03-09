@@ -1,19 +1,55 @@
 ---
 // Die Produkte werden aus einer JSON-Datei importiert 
 import products from '../../database/products.json';
+import PaginationLinks from '../PaginationLinks.astro';
 
 export interface Props {
-	productIDs: number[];
+    ensembleType: string;
+
+	page: {
+        data: number[];
+        start: number;
+        end: number;
+        size: number;
+        total: number;
+        currentPage: number;
+        lastPage: number;
+        url: {
+            current: string;
+            next: string;
+            prev: string;
+        }
+    };
 }
 
-const { productIDs } = Astro.props as Props;
+const { page, ensembleType } = Astro.props as Props;
+
+var pageArray = []
+    
+for (let i = 2; i <= page.lastPage; i++) {
+    pageArray.push(i);
+}
 ---
 
-<div class="flex flex-wrap justify-starts m-12 gap-60">
-    {productIDs.map((id: number) => (
+<div id="product_container"class="flex flex-wrap justify-starts m-12 gap-60">
+    {page.data.map((id: number) => (
       <div class="item w-24 h-24 text-center bg-blue-100 border border-dashed border-blue-800">
         <h2 class="text-lg font-bold">{products.find(product => product.id == id).title}</h2>
         <p>{products.find(product => product.id == id).text}</p>
       </div>
     ))}
+</div>
+
+<div class="text-center">
+    <div id="pagination_bar" class="inline-block">
+        {page.url.prev == undefined && <PaginationLinks number="&laquo;" link="" gray={true} />}
+        {!(page.url.prev == undefined) && ((page.currentPage == 2) ? <PaginationLinks number="&laquo;" link={"/shop/" + ensembleType} /> : <PaginationLinks number="&laquo;" link={(page.currentPage  - 1).toString()} />)}
+        <PaginationLinks number="1" link={"/shop/" + ensembleType} />
+
+        {pageArray.map((pageNumber: number) => (
+            <PaginationLinks number={pageNumber.toString()} link={"/shop/" + ensembleType + "/" + pageNumber.toString()} />
+        ))}
+        {page.url.next == undefined && <PaginationLinks number="&raquo;" link="" gray={true} />}
+        {!(page.url.next == undefined) && ((page.currentPage == 1) ? <PaginationLinks number="&raquo;" link={"/shop/" + ensembleType + "/2"} /> : <PaginationLinks number="&raquo;" link={(page.currentPage +1).toString()} />)}
+    </div>
 </div>

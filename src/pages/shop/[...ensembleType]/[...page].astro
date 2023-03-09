@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Visible from '../../../components/Visible.vue';
+import StaticPagination from '../../../components/ensemble-seiten/StaticPagination.astro';
+
+// Die Definitionen der Ensembles werden aus einer JSON-Datei importiert
+import ensembles from '../../../database/ensembles.json';
+import productsForTheShopStartPage from '../../../database/productsForTheShopStartPage.json';
+
+
+// Ensemble-Unterseiten werden generiert (Paginierungfunktion)
+export async function getStaticPaths({ paginate }) {
+
+  //Definition für Shop-Startseite
+  ensembles.push({"ensembleType": undefined, "title": "Alle", "productIDs": productsForTheShopStartPage})
+
+
+  return ensembles.map(({ ensembleType, title, productIDs }) => {
+    return paginate(productIDs, {
+      params: { ensembleType },
+      // Anzahl Produkte pro Seite
+      pageSize: 1,
+      props: { title, ensembleType },
+    });
+  });
+}
+
+const { page, title, ensembleType } = Astro.props;
+
+var ensemble = ensembleType
+
+if (ensemble == undefined) {
+  ensemble = "";
+}
+
+console.log(page);
+---
+
+<script>
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const urlParams = Object.fromEntries(urlSearchParams.entries());
+  // console.log(urlParams);
+  
+  // Im HTML-Code gibt es zwei divs für den gesamten Shopinhalt einer Seite: Einmal HTML und einmal eine JS-lastige Vue-Komponente.
+  // Die statische HTML-Seiten werden für SEO und Performance generiert. (Die Seiten werden paginiert)
+  // Die Vue-Komponente wird für gleichzeitige Filterung und Paginierung benötigt. Man will nicht für alle möglichen Filterparameterkombinationen einige statische Seiten mit der richtigen Paginierung generieren.
+  // Idee: Beides reinpacken und das unsichtbar machen, das nicht da sein soll
+  // Wenn keine Parameter angegeben sind, wird die statische Astro-Komponente angezeigt, sonst die JS-lastige Vue-Komponente
+  if (Object.keys(urlParams).length > 0) {
+    document.getElementById('staticProductPage').style.display = 'none';
+    document.getElementById('vueProductPage').style.display = 'block';
+  }
+</script>
+
+
+<BaseLayout title={title}>
+  <div class="text-center">Ensemble: {title}</div>
+  <h1>Page {page.currentPage}</h1>
+  <div id="products">
+    <div id="staticProductPage">
+      <StaticPagination page={page} ensembleType={ensemble} />
+    </div>
+    <div id="vueProductPage" class="hidden">
+      <Visible client:visible/>
+    </div>
+  </div>
+</BaseLayout>
