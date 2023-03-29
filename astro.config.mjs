@@ -8,5 +8,6 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   integrations: [tailwind(), vue()],
   site: 'https://notenentwickler.com',
-  server: { port: 3000}
+  server: { port: 3000},
+  //output: 'server'
 });

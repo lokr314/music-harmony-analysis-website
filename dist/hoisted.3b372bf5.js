@@ -1,0 +1,1 @@
+import"./chunks/BaseLayout.astro_astro_type_script_index_0_lang.88511851.js";const e=new URLSearchParams(window.location.search),t=Object.fromEntries(e.entries());Object.keys(t).length>0&&(document.getElementById("staticProductPage").style.display="none",document.getElementById("vueProductPage").style.display="block");

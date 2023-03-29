@@ -4,7 +4,7 @@ import products from '../../database/products.json';
 import PaginationLinks from '../PaginationLinks.astro';
 
 export interface Props {
-    ensembleType: string;
+    ensemble: string;
 
 	page: {
         data: number[];
@@ -22,7 +22,7 @@ export interface Props {
     };
 }
 
-const { page, ensembleType } = Astro.props as Props;
+const { page, ensemble } = Astro.props as Props;
 
 var pageArray = []
     
@@ -43,13 +43,16 @@ for (let i = 2; i <= page.lastPage; i++) {
 <div class="text-center">
     <div id="pagination_bar" class="inline-block">
         {page.url.prev == undefined && <PaginationLinks number="&laquo;" link="" gray={true} />}
-        {!(page.url.prev == undefined) && ((page.currentPage == 2) ? <PaginationLinks number="&laquo;" link={"/shop/" + ensembleType} /> : <PaginationLinks number="&laquo;" link={(page.currentPage  - 1).toString()} />)}
-        <PaginationLinks number="1" link={"/shop/" + ensembleType} />
-
+        {!(page.url.prev == undefined) && ((page.currentPage == 2) ? <PaginationLinks number="&laquo;" link={"/shop/" + ensemble} /> : <PaginationLinks number="&laquo;" link={(page.currentPage  - 1).toString()} />)}
+        
+        
+        <PaginationLinks number="1" link={"/shop/" + ensemble} />
         {pageArray.map((pageNumber: number) => (
-            <PaginationLinks number={pageNumber.toString()} link={"/shop/" + ensembleType + "/" + pageNumber.toString()} />
+            <PaginationLinks number={pageNumber.toString()} link={"/shop/" + ensemble + "/" + pageNumber.toString()} />
         ))}
+
+
         {page.url.next == undefined && <PaginationLinks number="&raquo;" link="" gray={true} />}
-        {!(page.url.next == undefined) && ((page.currentPage == 1) ? <PaginationLinks number="&raquo;" link={"/shop/" + ensembleType + "/2"} /> : <PaginationLinks number="&raquo;" link={(page.currentPage +1).toString()} />)}
+        {!(page.url.next == undefined) && ((page.currentPage == 1) ? <PaginationLinks number="&raquo;" link={"/shop/" + ensemble + "/2"} /> : <PaginationLinks number="&raquo;" link={(page.currentPage +1).toString()} />)}
     </div>
 </div>

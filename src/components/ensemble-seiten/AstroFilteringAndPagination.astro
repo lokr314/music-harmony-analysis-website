@@ -1,0 +1,46 @@
+---
+export interface Props {
+    ensemble: string;
+}
+
+const { ensemble } = Astro.props as Props;
+
+// Get the products from the database
+const response =  await fetch('http://localhost:1337/api/products?populate=*').then((res) => res.json());
+
+---
+
+<script>
+// Make a custom element for filtering the data 
+class AstroGreet extends HTMLElement {
+    constructor() {
+        super();
+
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const urlParams = Object.fromEntries(urlSearchParams.entries());
+        console.log(urlParams);
+        
+        // Read the ensemble from the data attribute.
+        const ensemble = this.dataset.ensemble;
+        console.log(ensemble);
+
+        // Read the products from the data attribute.
+        const products = this.dataset.products;
+        console.log(JSON.stringify(products)); 
+
+        document.getElementById('urlParams').innerHTML = JSON.stringify(urlParams);
+
+    }
+}
+
+customElements.define('astro-greet', AstroGreet);
+
+   
+
+// Filter the data based on the params given
+</script>
+
+
+<astro-greet data-products={JSON.stringify(response.data)} data-ensemble={ensemble}>
+    <h2 id="urlParams">Nothing</h2>
+</astro-greet>
