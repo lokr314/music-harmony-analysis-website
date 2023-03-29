@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Flexbox from '../components/Flexbox.astro';
-import Visible from '../components/Visible.vue';
 
 const response = await fetch('http://localhost:1337/api/ensembles?populate=*').then((res) => res.json());
 console.log(JSON.stringify(response.data));
@@ -19,6 +17,4 @@ console.log(JSON.stringify(response.data));
             Hello {JSON.stringify(response.data)}
         </p>
     </div>
-    <Visible client:load />
-    <Flexbox />
 </BaseLayout>

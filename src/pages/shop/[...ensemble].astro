@@ -1,29 +1,9 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StaticPagination from '../../../components/ensemble-seiten/StaticPagination.astro';
-import FilteringAndPagination from '../../../components/ensemble-seiten/FilteringAndPagination.vue';
-
-// Die Definitionen der Ensembles werden aus einer JSON-Datei importiert
-import ensembles from '../../../database/ensembles.json';
-import productsForTheShopStartPage from '../../../database/productsForTheShopStartPage.json';
-import AstroFilteringAndPagination from '../../../components/ensemble-seiten/AstroFilteringAndPagination.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 
-// Ensemble-Unterseiten werden generiert (Paginierungfunktion)
-export async function getStaticPaths({ paginate }) {
-
-  //Definition für Shop-Startseite
-  ensembles.push({"ensembleType": undefined, "title": "Alle", "productIDs": productsForTheShopStartPage})
-
-
-  return ensembles.map(({ ensembleType, title, productIDs }) => {
-    return paginate(productIDs, {
-      params: { ensembleType },
-      // Anzahl Produkte pro Seite
-      pageSize: 1,
-      props: { title, ensembleType },
-    });
-  });
+// Ensemble-Unterseiten werden generiert
+export async function getStaticPaths() {
 }
 
 const { page, title, ensembleType } = Astro.props;
@@ -63,17 +43,6 @@ console.log(page);
 
 <BaseLayout title={title}>
   <div class="text-center">Ensemble: {title}</div>
-  <h1>Page {page.currentPage}</h1>
   <div id="products">
-    <div id="staticProductPage">
-      <StaticPagination page={page} ensemble={ensemble} />
-    </div>
-    <div id="filterProductPage">
-      <AstroFilteringAndPagination ensemble={ensemble} />
-    </div>
-
-    <div id="vueProductPage" class="hidden">
-      <FilteringAndPagination client:visible/>
-    </div>
   </div>
 </BaseLayout>
