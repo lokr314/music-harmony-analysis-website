@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const response = await fetch('http://localhost:1337/api/ensembles?populate=*').then((res) => res.json());
 console.log(JSON.stringify(response.data));
 ---
 
@@ -11,10 +9,5 @@ console.log(JSON.stringify(response.data));
             <h1 class="text-3xl text-amber-800 font-bold">Soli Deo gloria</h1>
             <p class="text-xl w-1/2 text-amber-500">Soli Deo gloria is a Latin term for Glory to God alone. It has been used by artists like Johann Sebastian Bach, George Frideric Handel, and Christoph Graupner to signify that the work was produced for the sake of praising God. The phrase has become one of the five solae propounded to summarise the Reformers' basic beliefs during the Protestant Reformation. </p>
         </div>
-    </div>
-    <div>
-        <p>
-            Hello {JSON.stringify(response.data)}
-        </p>
     </div>
 </BaseLayout>
