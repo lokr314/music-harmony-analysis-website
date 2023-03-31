@@ -1,24 +1,24 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// Die Produkte werden aus einer JSON-Datei importiert 
-import products from '../../database/products.json';
-
   //Für jedes Produkt wird eine Seite generiert
 export async function getStaticPaths() {
-  return products.map(({ productURL, title, text }) => {
+  const response = await fetch('http://localhost:1337/api/products?populate=*').then((res) => res.json());
+
+  return response.data.map((product) => {
     return {
-      params: { productURL },
-      props: { title, text },
+      params: { productURL: product.attributes.productURL },
+      props: { product },
     };
   });
 }
 
-//Die Seite wird mit den spezifischen Produktdaten gefüllt
-const { title, text } = Astro.props;
+const { product } = Astro.props;
+
+const productData = product.attributes;
 ---
 
-<BaseLayout title={title}>
-  <div>Product: {title}!</div>
-  <div>{text}</div>
+<BaseLayout title={productData.title}>
+  <div>Product: {productData.title}!</div>
+  <div>{productData.description}</div>
 </BaseLayout>
