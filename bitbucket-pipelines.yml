@@ -16,16 +16,16 @@ pipelines:
             - git push uberspace master
             
             
-    build-and-deploy-ftp:
+    build-and-deploy-sftp:
       - step:
           name: Deploy to Production
           script:
-            - pipe: atlassian/ftp-deploy:0.4.0
+            - pipe: atlassian/sftp-deploy:0.5.11
               variables:
                 USER: $FTP_USERNAME
-                PASSWORD: $FTP_PASSWORD
                 SERVER: $FTP_HOST
-                REMOTE_PATH: '/var/www/virtual/lokr/bitbucket'
-                LOCAL_PATH: 'dist/assets'
-                SET_ARGS: '-p 41840'
+                REMOTE_PATH: '/var/www/virtual/lokr/html'
+                LOCAL_PATH: 'dist'
+                DEBUG: 'true'
+                EXTRA_ARGS: '-P 41840'
 
