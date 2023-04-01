@@ -23,10 +23,9 @@ pipelines:
             - pipe: atlassian/sftp-deploy:0.5.11
               variables:
                 USER: $FTP_USERNAME
-                SERVER: '95.143.172.147'
+                SERVER: '95.143.172.147:41840'
                 PASSWORD: $FTP_PASSWORD
                 REMOTE_PATH: '/var/www/virtual/lokr/html/'
                 LOCAL_PATH: 'dist'
                 DEBUG: 'true'
-                EXTRA_ARGS: '-P 41840'
 
