@@ -3,7 +3,7 @@ import ProductEnsembleView from "../../components/ProductEnsembleView.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-    const response = await fetch('http://localhost:1337/api/ensembles?populate=*').then((res) => res.json());
+    const response = await fetch('https://notenentwickler.com/api/ensembles?populate=*').then((res) => res.json());
     
     return response.data.map((ensemble) => {
         return {
