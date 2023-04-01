@@ -25,6 +25,6 @@ pipelines:
                 USER: $FTP_USERNAME
                 PASSWORD: $FTP_PASSWORD
                 SERVER: $FTP_HOST
-                REMOTE_PATH: '/var/www/virtual/lokr/html'
-                LOCAL_PATH: '/dist/assets/'
+                REMOTE_PATH: /var/www/virtual/lokr/bitbucket
+                LOCAL_PATH: dist/assets
 
