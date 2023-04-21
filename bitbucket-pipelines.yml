@@ -25,7 +25,7 @@ pipelines:
                 USER: $FTP_USERNAME
                 SERVER: '95.143.172.147'
                 PASSWORD: $FTP_PASSWORD
-                REMOTE_PATH: '/var/www/virtual/lokr/html/'
+                REMOTE_PATH: 'html'
                 LOCAL_PATH: 'dist'
                 DEBUG: 'true'
 
