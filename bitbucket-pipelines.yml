@@ -18,6 +18,20 @@ pipelines:
             
     build-and-deploy-sftp:
       - step:
+          name: Build the Astro Project
+          script:
+            - npm install
+            - npm run build
+      - step:
+          name: Remove old distribution
+          script:
+            - pipe: atlassian/ssh-run:0.2.4
+              variables:
+                SSH_USER: $FTP_USERNAME
+                SERVER: $'95.143.172.147'
+                COMMAND: 'rm -rf html/*'
+                DEBUG: 'true'
+      - step:
           name: Deploy to Production
           script:
             - pipe: atlassian/sftp-deploy:0.5.11
@@ -28,4 +42,16 @@ pipelines:
                 REMOTE_PATH: 'html'
                 LOCAL_PATH: 'dist'
                 DEBUG: 'true'
+                
+    test-removing:
+      - step:
+          name: Remove old distribution
+          script:
+            - pipe: atlassian/ssh-run:0.2.4
+              variables:
+                SSH_USER: $FTP_USERNAME
+                SERVER: $'95.143.172.147'
+                COMMAND: 'rm -rf html/*'
+                DEBUG: 'true'
+  
 
