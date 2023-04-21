@@ -28,7 +28,7 @@ pipelines:
             - pipe: atlassian/ssh-run:0.2.4
               variables:
                 SSH_USER: $FTP_USERNAME
-                SERVER: $'95.143.172.147'
+                SERVER: '95.143.172.147'
                 COMMAND: 'rm -rf html/*'
                 DEBUG: 'true'
       - step:
@@ -50,7 +50,7 @@ pipelines:
             - pipe: atlassian/ssh-run:0.2.4
               variables:
                 SSH_USER: $FTP_USERNAME
-                SERVER: $'95.143.172.147'
+                SERVER: '95.143.172.147'
                 COMMAND: 'rm -rf html/*'
                 DEBUG: 'true'
   
