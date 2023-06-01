@@ -29,7 +29,7 @@ pipelines:
               variables:
                 SSH_USER: $FTP_USERNAME
                 SERVER: '95.143.172.147'
-                COMMAND: 'rm -rf html/*'
+                COMMAND: 'rm -rf /var/www/virtual/lokr/dist/*'
                 DEBUG: 'true'
       - step:
           name: Deploy to Production
@@ -39,8 +39,8 @@ pipelines:
                 USER: $FTP_USERNAME
                 SERVER: '95.143.172.147'
                 PASSWORD: $FTP_PASSWORD
-                REMOTE_PATH: 'html'
-                LOCAL_PATH: 'dist'
+                REMOTE_PATH: '/var/www/virtual/lokr/dist/'
+                LOCAL_PATH: 'dist/*'
                 DEBUG: 'true'
                 
     test-removing:
