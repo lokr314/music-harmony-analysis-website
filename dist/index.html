@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="Analyze harmonies in music - New theory of musical harmony">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width">
+		<link rel="icon" href="/images/Logo.png">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+    	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/index.3fa9d404.css" /></head>>
+		<meta name="generator" content="Astro v1.9.2">
+		<link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css">
+		<script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
+		<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+		<link href="./abcjs-audio.css" media="all" rel="stylesheet" type="text/css">
+		<script src="./abcjs-basic-min.js" type="text/javascript"></script>
+		<title>Music Harmony Analysis Tool</title>
+	
+	
+		<h1>renderABC with Button</h1><textarea name="abc" id="abc" cols="80" rows="15">X: 1
+L: 1/4
+M: 3/4
+V: 1 clef=treble
+V: 2 clef=bass
+K: Bb
+[V:1] c2!accent!d | 
+[V:2] x!accent!^F,2- & !accent![_G,A,E]=B,,z | 
+[V:1] F2!accent!d | 
+[V:2] F,3- & [B,D].B,,z |
+    </textarea><br><button id="renderButton">
+        Render
+    </button><button id="analyzeButton">
+        Analyze
+    </button><br><button id="exampleTristanChordButton">
+        Tristan Chord
+    </button><button id="exampleSimpleMelodyButton">
+        Simple Melody
+    </button><button id="example20Button">
+        20. Jhr.
+    </button><hr><div id="audio"></div><div id="warnings"></div><div id="paper0" class="m-10 bg-yellow-50"></div><div id="selection"></div><div id="informations" class="bg-sky-50"></div><div id="play"></div><div id="analysisabc"></div><div id="input" class="bg-green-300"></div><script type="text/javascript">
+
+        var visualObj;
+        var lines;
+        var abcString;
+        var analysis_abc_string;
+
+        if (ABCJS.synth.supportsAudio()) {
+            console.log("Audio is supported.");
+        } else {
+            console.log("Audio is not supported.");
+        }
+        var audioParams = { chordsOff: true };
+        var renderParams = {
+            //responsive: 'resize',
+        };
+        var synthControl;
+        var createSynth;
+
+        function truncate_lines(lines) {
+            for (var i = 0; i < lines.length; i++) {
+                //console.log(lines[i]);
+                //delete lines[i].staffGroup;
+                for (var j = 0; j < lines[i].staff.length; j++) {
+                    //console.log(lines[i].staff[j]);
+                    if ('meter' in lines[i].staff[j]) {
+                        delete lines[i].staff[j].meter.abselem;
+                    }
+                    delete lines[i].staff[j].clef.abselem;
+                    delete lines[i].staff[j].clef.clefPos;
+                    delete lines[i].staff[j].clef.verticalPos;
+                    delete lines[i].staff[j].key.abselem;
+                    for (var k = 0; k < lines[i].staff[j].voices.length; k++) {
+                        //console.log(lines[i].staff[j].voices[k]);
+                        for (var l = 0; l < lines[i].staff[j].voices[k].length; l++) {
+                            //console.log(lines[i].staff[j].voices[k][l]);
+                            delete lines[i].staff[j].voices[k][l].abselem;
+                            delete lines[i].staff[j].voices[k][l].endChar;
+                            delete lines[i].staff[j].voices[k][l].startChar;
+                        }
+                    }
+                } 
+            }
+            return lines;
+        }
+
+        //analyze is a boolean, true if you want to analyze
+    	function render(analyze) {
+            abcString = document.getElementById("abc").value;
+            //console.log(abcString);
+            visualObj = ABCJS.renderAbc("paper0", abcString, renderParams);
+
+            console.log(visualObj);
+
+            synthControl = new ABCJS.synth.SynthController();
+	        synthControl.load("#audio", 
+                {}, 
+                {
+                    displayLoop: true, 
+                    displayRestart: true, 
+                    displayPlay: true, 
+                    displayProgress: true, 
+                    displayWarp: true
+                }
+            );
+            createSynth = new ABCJS.synth.CreateSynth();
+
+            createSynth.init({ visualObj: visualObj[0] }).then(function () {
+        		synthControl.setTune(visualObj[0], false, audioParams).then(function () {
+        			console.log("Audio successfully loaded.")
+        		}).catch(function (error) {
+        			console.warn("Audio problem:", error);
+        		}).then(function () {
+
+                    if (analyze) {
+        			    linesWithStaffGroup = visualObj[0].lines;
+
+                        //console.log(linesWithStaffGroup);
+                        truncate_lines(linesWithStaffGroup);
+
+                        lines = [];
+                        for (var i = 0; i < linesWithStaffGroup.length; i++) {
+                            lines.push({"staff": linesWithStaffGroup[i].staff});
+                        }
+
+                        console.log(lines);
+
+                        main().then(() => {
+                            console.log("pyodide done");
+                            console.log(analysis_abc_string);
+
+                            const lines = abcString.split("\n").filter(line => line.trim() !== "");
+                            const abcStringWithoutEmptyLines = lines.join("\n");
+                            const a = abcStringWithoutEmptyLines + analysis_abc_string;
+
+                            ABCJS.renderAbc("paper0", a, renderParams);
+                        });
+                    }
+                });     
+        	}).catch(function (error) {
+        		console.warn("Audio problem:", error);
+        	});
+    	}
+
+        
+        async function main() {
+
+            let python_code = `
+import js
+import micropip
+await micropip.install('music-harmony-analysis')
+from abcjs_interface import get_analyzed_abc_strings
+
+
+def analysis_strings_to_string(analysis_abc_strings):
+    """
+    Input:
+    - analysis_abc_strings: Dictionary with the following fields:
+    - header: String. The header of the abc analysis: '\nL:1\n'.
+    - events: List of strings. Format: '[V: Analysis] [CE^^G]1/4 [C_EGB]1/4\n'. ('[V: Analysis name=Analysis snm=A.]' for the first line) Each string represents the harmonies of one line of music.
+    - harmonic_states: List of strings. Format: 'w: [C,Cis,Dm] [C,Cis,Dm]\n'. Each string corresponds to the events of one line.
+    - sauterian_formula: List of strings. Format: 'w: T15D15S3 D35S1A3,11\n'. Each string corresponds to the events of one line.
+    - degree_of_dissonance_or_atonal: List of strings. Format: 'w: / low\n'. Each string corresponds to the events of one line.
+    """
+    analysis_abc_string = analysis_abc_strings['header']
+    for i in range(len(analysis_abc_strings['events'])):
+        analysis_abc_string += analysis_abc_strings['events'][i]
+        analysis_abc_string += analysis_abc_strings['harmonic_states'][i]
+        analysis_abc_string += analysis_abc_strings['sauterian_formula'][i]
+        analysis_abc_string += analysis_abc_strings['degree_of_dissonance_or_atonal'][i]
+    return analysis_abc_string
+
+
+input = js.lines.to_py()
+
+analysis_abc_strings, informations, error = get_analyzed_abc_strings(input)
+
+js.analysis_abc_string = analysis_strings_to_string(analysis_abc_strings)
+
+if error:
+    js.document.getElementById("informations").style.background = "#EE8A9E"
+    js.document.getElementById("informations").innerHTML = error
+else:
+    js.document.getElementById("informations").style.background = "#F0F9FF"
+    js.document.getElementById("informations").innerHTML = informations
+
+`;
+            
+            let pyodide = await loadPyodide();
+            //pyodide is now ready to use...
+            await pyodide.loadPackage('micropip');
+            
+            await pyodide.runPythonAsync(python_code);
+        };
+
+
+        function renderTristanChord() {
+            document.getElementById("abc").value = `X: 1
+T: Tristan Prelude
+L:1/8
+M:6/8
+Q:1/8=100
+%%staves (S A) B
+K:Am
+V:S treble
+z | z6 | (^G3-G2 A | ^A B2-B) zz
+V:A treble
+(A, | F3-F2 E | ^D6 | =D3-)D zz
+V:B bass octave=-2
+z | z6 | ([fb]6 | [e^g]3-)[e^g] zz
+`
+            render();
+        }
+        
+        function renderSimpleMelody() {
+            document.getElementById("abc").value = `X: 5
+T: Bach Minuet 1
+C: J. S. Bach 1685-1750
+M: 3/4
+L: 1/8
+K: G
+ "G".d2 .d2-.d2 |   B2 AB G2 |"D"A2 (.d2.c2) |"G"B4 "D"A2 |\
+ "G" d2  cBAG   |"C"e2 cBAG  |"D"F2   ED F2  |"G"G6      :|
+|: \
+"Em" B2  e4   |"A"^c2    Bc    A2 |"D" d2 e2 f2 |"A"ed^cB A2 |\
+ "D" a2  gfed |"G" b2    gfed     |"A"^c2 A2 c2 |"D"d6       |
+ "G" d2  cBA2 |    B2 "D"AB "G"G2 |"C" c4    cB |"D"A6   "^I"|\
+ "G" d2  cBAG |"C" e2    cBAG     |"D" F2 ED F2 |"G"G6      :|
+`
+            render();
+        }
+
+        function render20() {
+            document.getElementById("abc").value = `X: 1
+T: Showoff
+M:C|
+L:1/8
+Q:1/16=78
+%%score (1 2) (3)
+V:1  clef=treble  name="Eins"   snm="1"
+V:2  clef=treble  name="Zwei"  snm="2"
+V:3  clef=bass    name="Drei"    snm="3"  octave=-2
+K: C
+%1
+[V:1] | c2d2e2f2 | ggffeedd |
+[V:2] | __D4 G4 | G2A2G2A2 |
+[V:3] | C8 G,8 |
+%3
+K: Bm
+[V:1] | (3::2 _c4||c2 f'3 g' | ^e'6 f'2 | 
+[V:2] | =F | F| F |::| F (5 FFFFF F2 F8 |
+[V:3] F16
+%5
+M: 3/8
+[V:1] | (5 Bc^de^A || __g || g | g |
+`
+            render();
+        }
+
+
+        document.getElementById("renderButton").onclick = () => {
+            render(false);
+        };
+        document.getElementById("analyzeButton").onclick = () => {
+            render(true);
+        };
+        document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
+        document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
+        document.getElementById("example20Button").onclick = render20;
+    </script>
+	
+
+</html>
