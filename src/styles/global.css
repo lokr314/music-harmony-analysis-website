@@ -11,7 +11,7 @@
   }
 
   body {
-    @apply font-sans text-lg leading-4 bg-amber-50 text-amber-900;
+    @apply font-sans text-lg leading-4;
   }
 
   a {
@@ -19,12 +19,10 @@
   }
 }
   
-
-  
-  
   
   p {
     margin: 0;
+    color: rgb(69 26 3);
   }
   
   ul {
@@ -39,22 +37,19 @@
   h2,
   h3 {
     line-height: 1.2;
+    color: rgb(69 26 3);
   }
   
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px;
-  }
+  
   
   .btn {
     display: inline-block;
     padding: 0.5rem 1rem;
     border-radius: 5px;
-    background: #333;
-    color: #fff;
+    background: rgb(69 26 3);
+    color: rgb(255 251 235);
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 1.4rem;
     letter-spacing: 1px;
     transition: all 0.3s ease;
   }
