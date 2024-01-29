@@ -14,9 +14,9 @@
 		<link href="./abcjs-audio.css" media="all" rel="stylesheet" type="text/css">
 		<script src="./abcjs-basic-min.js" type="text/javascript"></script>
 		<title>Music Harmony Analysis Tool</title>
-	<link rel="stylesheet" href="/assets/index.95ad98f4.css" /></head>
+	<link rel="stylesheet" href="/assets/index.85583018.css" /></head>
 	<body class="p-10">
-		<div class="flex justify-center items-center h-96 bg-amber-100">
+		<p>Page loading and first analyzing could take some time, additional software is required to load...</p><div class="flex justify-center items-center h-96 bg-amber-100">
         <div class="flex flex-col justify-center items-center">
             <h1 class="text-6xl font-bold">Analyze the harmonic structure of music</h1>
         </div>
@@ -41,7 +41,7 @@ K: Bb
     </button><button id="example20Button" class="btn my-4 mr-4">
         20. Jhr.
     </button><br><button type="button" id="a" class="w-10 h-5 bg-lime-400 mt-4"></button><label for="a"> Analysis</label><br><button type="button" id="hs" class="w-10 h-5 bg-lime-400"></button><label for="hs"> Harmonic States</label><br><button type="button" id="sf" class="w-10 h-5 bg-lime-400"></button><label for="sf"> Sauterian Formula</label><br><button type="button" id="dod" class="w-10 h-5 bg-lime-400 mb-4"></button><label for="dod"> Degree of Dissonance</label><br><hr><div id="audio"></div><div id="warnings"></div><div class="w-full"> 
-        <div id="paper0" class="bg-amber-50 text-amber-950 min-w-max"></div>
+        <div id="paper0" class="bg-amber-50 text-amber-950 min-w-fit"></div>
     </div><div id="selection"></div><div id="informations" class="bg-sky-50"></div><div id="play"></div><div id="analysisabc"></div><div id="input" class="bg-green-300"></div><script type="text/javascript">
 
         var a = true;
@@ -251,7 +251,7 @@ M: 3/4
 L: 1/8
 K: G
 V:1
- "G".d2 .d2-.d2 |   B2 AB G2 |"D"A2 (.d2.c2) |"G"B4 "D"A2 |\
+ "G".d2 .d2 .d2 |   B2 AB G2 |"D"A2 (.d2.c2) |"G"B4 "D"A2 |\
  "G" d2  cBAG   |"C"e2 cBAG  |"D"F2   ED F2  |"G"G6      :|
 |: \
 "Em" B2  e4   |"A"^c2    Bc    A2 |"D" d2 e2 f2 |"A"ed^cB A2 |\
@@ -361,5 +361,40 @@ else:
         document.getElementById("analyzeButton").onclick = () => {
             render(true);
         };
-    </script>
+    </script><br><br><div class="bg-amber-50 text-amber-950">
+        <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one octave.</p>
+        <br>
+        <h2 class="text-2xl font-bold">Harmonic States:</h2>
+        <p>A “Harmonic State” is an extension of the concept of the key which a listener of music perceives as the "current key".
+            The difference between a key and a harmonic state is that a harmonic state can consist of different keys at the same time, when the key is not clear.</p>
+        <br>
+        <h2 class="text-2xl font-bold">Sauterian Formula:</h2>
+        <p>If we have a harmonic state with a single key, we can give the sauterian formula for a harmony in this key: We indicate which chord tones of the tonic, subdominant and dominant of the key are used to form the harmony, for example "T35D13S1". A "/" is used for a rest, "ind." if we have a harmonic state with more than one key. If there are tones in the harmony that are not part of tonic, subdominant or dominant, these tones are atonal tones and are appended after an "A". For tones which are part of two of the T,S and D chords, we write the formula which give the form with the lowest degree of dissonance (see below). For example: "T135" is used instead of "T135D1S5".</p>
+        <br>
+        <h2 class="text-2xl font-bold">Degree of Dissonance:</h2>
+        <p>There are definitions for consonance and dissonance in the theory used here:
+            </p><ul>
+                <li> - A consonance consists of notes from exactly one of the chords of the tonic, subdominant and dominant of the current key.</li>
+                <li> - A "false consonance" (Scheinkonsonanz) is a harmony that, according to the other definitions, is a dissonance, but could be a consonance in an other key.</li>
+                <li> - A low (or mild) dissonance consists of notes from either tonic and subdominant or tonic and dominant.</li>
+                <li> - A medium dissonance consists of notes from subdominant and dominant.</li>
+                <li> - A high dissonance consists of notes from all of the chords of the tonic, subdominant and dominant.</li>
+            </ul>
+            If a harmony is atonal (there is no key that has all the notes of the harmony), we only indicate the number of atonal tones in the harmony (How many tones have to be removed to get a tonal harmony?).
+            A "/" is used for a rest, "ind." if we have a harmonic state with more than one key (but single tones are always consonant).
+            So, the possible values for the degree of dissonance are, sorted by increasing "dissonance":
+            <ul>
+                <li> - "con"</li>
+                <li> - "fcon"</li>
+                <li> - "low"</li>
+                <li> - "med"</li>
+                <li> - "high"</li>
+                <li> - "A1"</li>
+                <li> - "A2"</li>
+                <li> - "A3"</li>
+                <li> - "A4"</li>
+                <li> - "A5"</li>
+            <ul>
+        
+    </ul></ul></div>
 	</body></html>
