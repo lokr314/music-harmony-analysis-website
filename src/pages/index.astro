@@ -22,6 +22,8 @@ K: Bb
 [V:1] F2!accent!d | 
 [V:2] F,3- & [B,D].B,,z |
     </textarea>
+    <p class="text-sm">A good overview about the abc music notation standard can be found here: <a href="https://editor.drawthedots.com/">https://editor.drawthedots.com/</a>.<br/>
+        The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a></p>
     <br/>
     <button id="renderButton" class="btn my-4 mr-4">
         Render
@@ -40,8 +42,8 @@ K: Bb
         Simple Melody
     </button>
 
-    <button id="example20Button" class="btn my-4 mr-4">
-        20. Jhr.
+    <button id="exampleChoirButton" class="btn my-4 mr-4">
+        Choir
     </button>
 
     <br/>
@@ -259,11 +261,11 @@ Q:1/8=100
 %%staves (S A) B
 K:Am
 V:S treble
-z | z6 | (^G3-G2 A | ^A B2-B) zz |
 V:A treble
-(A, | F3-F2 E | ^D6 | =D3-)D zz |
 V:B bass octave=-2
-z | z6 | ([fb]6 | [e^g]3-)[e^g] zz |
+[V:S] z | z6 | (^G3-G2 A | ^A B2-B) zz |
+[V:A] (A, | F3-F2 E | ^D6 | =D3-)D zz |
+[V:B] z | z6 | ([fb]6 | [e^g]3-)[e^g] zz |
 `
             render();
         }
@@ -287,29 +289,29 @@ V:1
             render();
         }
 
-        function render20() {
-            document.getElementById("abc").value = `X: 1
-T: Showoff
-M:C|
-L:1/8
-Q:1/16=78
-%%score (1 2) (3)
-V:1  clef=treble  name="Eins"   snm="1"
-V:2  clef=treble  name="Zwei"  snm="2"
-V:3  clef=bass    name="Drei"    snm="3"  octave=-2
-K: C
-%1
-[V:1] | c2d2e2f2 | ggffeedd |
-[V:2] | __D4 G4 | G2A2G2A2 |
-[V:3] | C8 G,8 |
-%3
-K: Bm
-[V:1] | (3::2 _c4||c2 f'3 g' | ^e'6 f'2 | 
-[V:2] | =F | F| F |::| F (5 FFFFF F2 F8 |
-[V:3] F16 |
-%5
-M: 3/8
-[V:1] | (5 Bc^de^A || __g || g | g |
+        function renderChoir() {
+            document.getElementById("abc").value = `X:1  
+T:Zocharti Loch  
+C:Louis Lewandowski (1821-1894)  
+M:C
+Q:1/4=76
+%%score (T1 T2) (B1 B2)
+V:T1           clef=treble-8  name="Tenore I"   snm="T.I"
+V:T2           clef=treble-8  name="Tenore II"  snm="T.II"
+V:B1  middle=d clef=bass      name="Basso I"    snm="B.I" octave=-2
+V:B2  middle=d clef=bass      name="Basso II"   snm="B.II" octave=-2
+K:Gm
+%            End of header, start of tune body:
+% 1
+[V:T1]  (B2c2 d2g2)  | f6e2      | (d2c2 d2)e2 | d4 c2z2 |
+[V:T2]  (G2A2 B2e2)  | d6c2      | (B2A2 B2)c2 | B4 A2z2 |
+[V:B1]       z8      | z2f2 g2a2 | b2z2 z2 e2  | f4 f2z2 |
+[V:B2]       x8      |     x8    |      x8     |    x8   |
+% 5
+[V:T1]  (B2c2 d2g2)  | f8        | d3c (d2fe)  | H d6    ||
+[V:T2]       z8      |     z8    | B3A (B2c2)  | H A6    ||
+[V:B1]  (d2f2 b2e'2) | d'8       | g3g  g4     | H^f6    ||
+[V:B2]       x8      | z2B2 c2d2 | e3e (d2c2)  | H d6    ||
 `
             render();
         }
@@ -321,7 +323,7 @@ M: 3/8
         
         document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
         document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
-        document.getElementById("example20Button").onclick = render20;
+        document.getElementById("exampleChoirButton").onclick = renderChoir;
 
 
         //------------- Analyze -----------------
