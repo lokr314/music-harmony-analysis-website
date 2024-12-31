@@ -34,6 +34,11 @@ K: Bb
     </button>
     <br/>
     <p class="text-amber-950">Examples:</p>
+
+    <button id="TemplateButton" class="btn my-4 mr-4">
+        Template
+    </button>
+
     <button id="exampleTristanChordButton" class="btn my-4 mr-4">
         Tristan Chord
     </button>
@@ -252,6 +257,32 @@ K: Bb
 
 
 
+        function renderTemplate() {
+            document.getElementById("abc").value = `X: 1
+T: [Template]
+L:1/4
+M:4/4
+Q:1/4=90
+%%score (S A) (T B)
+V:S  name="Sopran" snm="S" octave=-1
+V:A  name="Alt"   snm="A" octave=-1
+V:T  clef=bass      name="Tenor" snm="T" octave=-2
+V:B  clef=bass      name="Bass" snm="B" octave=-2
+K:C
+% 1
+[V:S]       x4      |     x4    |      x4     |    x4   |
+[V:A]       x4      |     x4    |      x4     |    x4   |
+[V:T]       x4      |     x4    |      x4     |    x4   |
+[V:B]       x4      |     x4    |      x4     |    x4   |
+% 5
+[V:S]       x4      |     x4    |      x4     |    x4   |
+[V:A]       x4      |     x4    |      x4     |    x4   |
+[V:T]       x4      |     x4    |      x4     |    x4   |
+[V:B]       x4      |     x4    |      x4     |    x4   |
+`
+            render();
+        }
+
         function renderTristanChord() {
             document.getElementById("abc").value = `X: 1
 T: Tristan Prelude
@@ -321,6 +352,7 @@ K:Gm
             render(false);
         };
         
+        document.getElementById("TemplateButton").onclick = renderTemplate;
         document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
         document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
         document.getElementById("exampleChoirButton").onclick = renderChoir;
