@@ -14,38 +14,94 @@
 		<link href="./abcjs-audio.css" media="all" rel="stylesheet" type="text/css">
 		<script src="./abcjs-basic-min.js" type="text/javascript"></script>
 		<title>Music Harmony Analysis Tool</title>
-	<link rel="stylesheet" href="/assets/index.cfa60c41.css" /></head>
+	<link rel="stylesheet" href="/assets/index.3f007082.css" /></head>
 	<body class="p-10">
 		<p>Page loading and first analyzing could take some time, additional software is required to load...</p><div class="flex justify-center items-center h-96 bg-amber-100">
         <div class="flex flex-col justify-center items-center">
             <h1 class="text-6xl font-bold">Analyze the harmonic structure of music</h1>
         </div>
     </div><p>My bachelor thesis, which explains the music theory this program is based on, can be found here: <a href="bachelor-thesis.pdf" download="Louis-Krüger-Bachelor-Thesis.pdf">Download pdf</a></p><br><textarea name="abc" id="abc" cols="80" rows="15" class="border border-amber-950 bg-amber-50 text-amber-950">X: 1
-L: 1/4
-M: 3/4
-V: 1 clef=treble
-V: 2 clef=bass
-K: Bb
-[V:1] c2!accent!d | 
-[V:2] x!accent!^F,2- & !accent![_G,A,E]=B,,z | 
-[V:1] F2!accent!d | 
-[V:2] F,3- & [B,D].B,,z |
+T: Tristan Prelude
+L:1/8
+M:6/8
+Q:1/8=100
+%%staves (S A) B
+K:Am
+V:S treble
+V:A treble
+V:B bass octave=-2
+[V:S] z | z6 | (^G3-G2 A | ^A B2-B) zz |
+[V:A] (A, | F3-F2 E | ^D6 | =D3-)D zz |
+[V:B] z | z6 | ([fb]6 | [e^g]3-)[e^g] zz |
     </textarea><p class="text-sm">A good overview about the abc music notation standard can be found using the help button here: <a href="https://editor.drawthedots.com/">https://editor.drawthedots.com/</a>.<br>
-        The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a></p><br><button id="renderButton" class="btn my-4 mr-4">
+        The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a></p><br><label for="start_harmonic_state">Start Harmonic State</label><br><input id="start_harmonic_state" type="text" placeholder="[All]" value="[All]" class="bg-amber-50 border border-amber-50 text-amber-950 text-sm rounded-lg focus:ring-amber-950 focus:border-amber-950 block w-full p-2.5 placeholder-amber-100 dark:bg-amber-950 dark:border-amber-950 dark:placeholder-amber-100 dark:text-amber-50 dark:focus:ring-amber-50 dark:focus:border-amber-50"><br><button id="renderButton" class="btn my-4 mr-4">
         Render
     </button><button id="analyzeButton" class="btn my-4 mr-4">
         Analyze
-    </button><br><p class="text-amber-950">Examples:</p><button id="TemplateButton" class="btn my-4 mr-4">
-        Template
-    </button><button id="exampleTristanChordButton" class="btn my-4 mr-4">
+    </button><br><hr><div id="audio"></div><div id="warnings"></div><div class="w-full"> 
+        <div id="paper0" class="bg-amber-50 text-amber-950 min-w-fit"></div>
+    </div><div id="selection"></div><div id="informations" class="bg-sky-50"></div><div id="play"></div><div id="analysisabc"></div><div id="input" class="bg-green-300"></div><br><button type="button" id="a" class="w-10 h-5 bg-lime-400 mt-4"></button><label for="a"> Analysis</label><br><button type="button" id="hs" class="w-10 h-5 bg-lime-400"></button><label for="hs"> Harmonic States</label><br><button type="button" id="sf" class="w-10 h-5 bg-lime-400"></button><label for="sf"> Sauterian Formula</label><br><button type="button" id="dod" class="w-10 h-5 bg-lime-400 mb-4"></button><label for="dod"> Degree of Dissonance</label><br><br><p class="text-amber-950">Examples:</p><button id="SingleVoiceTemplateButton" class="btn my-4 mr-4">
+        Single Voice Template
+    </button><button id="ChoirTemplateButton" class="btn my-4 mr-4">
+        Choir Template
+    </button><br><button id="exampleTristanChordButton" class="btn my-4 mr-4">
         Tristan Chord
     </button><button id="exampleSimpleMelodyButton" class="btn my-4 mr-4">
         Simple Melody
     </button><button id="exampleChoirButton" class="btn my-4 mr-4">
         Choir
-    </button><br><button type="button" id="a" class="w-10 h-5 bg-lime-400 mt-4"></button><label for="a"> Analysis</label><br><button type="button" id="hs" class="w-10 h-5 bg-lime-400"></button><label for="hs"> Harmonic States</label><br><button type="button" id="sf" class="w-10 h-5 bg-lime-400"></button><label for="sf"> Sauterian Formula</label><br><button type="button" id="dod" class="w-10 h-5 bg-lime-400 mb-4"></button><label for="dod"> Degree of Dissonance</label><br><hr><div id="audio"></div><div id="warnings"></div><div class="w-full"> 
-        <div id="paper0" class="bg-amber-50 text-amber-950 min-w-fit"></div>
-    </div><div id="selection"></div><div id="informations" class="bg-sky-50"></div><div id="play"></div><div id="analysisabc"></div><div id="input" class="bg-green-300"></div><script type="text/javascript">
+    </button><br><br><div class="bg-amber-50 text-amber-950">
+        <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one octave.</p>
+        <br>
+        <h2 class="text-4xl">Harmonic States</h2>
+    <p>A <strong>Harmonic State</strong> is an extension of the concept of a "key" in music. Typically, a "key" represents the single, clear tonal center that a listener perceives. A harmonic state, however, allows for situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, harmonic states always relate to the perception of one or more simultaneous keys.</p>
+    
+    <h2 class="text-4xl">The Sauterian Formula</h2>
+    <p>The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a harmonic state. Here’s how it works:</p>
+    
+    <h3 class="text-2xl">Basic Structure</h3>
+    <ul>
+        <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant (S)</strong>, and <strong>Dominant (D)</strong> within a key.</li>
+        <li>For example: <code>T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st and 3rd of the dominant, and the 1st of the subdominant.</li>
+    </ul>
+    
+    <h3 class="text-2xl">Special Cases</h3>
+    <ul>
+        <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code>/</code>.</li>
+        <li><strong>Ambiguous Keys:</strong> If the harmonic state involves multiple keys, we write <code>ind.</code> (short for "indeterminate").</li>
+        <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant chords are called <em>atonal tones</em>. These are listed as pitch classes after an <code>A</code>. For example, <code>T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two atonal notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.</li>
+    </ul>
+    
+    <h3 class="text-2xl">Simplification Rule</h3>
+    <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we simplify the formula by only listing it with the chord that creates the <strong>least dissonance</strong>. For instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
+    
+    <h2 class="text-4xl">Degrees of Dissonance</h2>
+    <p>In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic, subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal notes present in the harmony. The levels progress continuously from least dissonant to most dissonant:</p>
+    
+    <ul>
+        <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic, subdominant, or dominant). This is the most stable and pleasant sound.</li>
+        <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds consonant but only fits as such in a different key. For example, the chord a-minor (<code>T13S3</code>) in the key of C major creates a false consonance.</li>
+        <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and subdominant or tonic and dominant. This is mild dissonance.</li>
+        <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant chords. This is more dissonant than "low."</li>
+        <li><strong>High Dissonance (<code>high</code>):</strong> Notes come from all three chords (tonic, subdominant, and dominant). This is the most complex type of tonal dissonance.</li>
+        <li><strong>Atonality (<code>A1</code>, <code>A2</code>, ...):</strong> If the harmony includes notes that do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal harmonies are even more dissonant than "high" dissonance. For example:
+            <ul>
+                <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
+                <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest degree of dissonance.</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <p>As the levels of dissonance rise from <code>con</code> (consonance) to <code>A5</code> (most dissonant), the harmony becomes progressively more complex and tense.</p>
+    
+    <h2 class="text-4xl">Summary of Notation</h2>
+    <ul>
+        <li><code>/</code>: A rest (silence).</li>
+        <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
+        <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
+        <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies with pitch classes listed, where increasing numbers indicate higher dissonance.</li>
+    </ul>
+    </div><script type="text/javascript">
 
         var a = true;
         var hs = true;
@@ -100,6 +156,8 @@ K: Bb
             }
             render(true);
         };
+
+        var start_harmonic_state;
 
         var visualObj;
         var lines;
@@ -209,6 +267,12 @@ K: Bb
 
                         console.log(lines);
 
+                        start_harmonic_state = document.getElementById('start_harmonic_state').value
+                        if (start_harmonic_state == '') {
+                            start_harmonic_state = '[All]'
+                        }
+                        console.log(start_harmonic_state)
+
                         main().then(() => {
                             console.log("pyodide done");
                             console.log(analysis_abc_string);
@@ -227,10 +291,26 @@ K: Bb
     	}
 
 
-
-        function renderTemplate() {
+        function renderSingleVoiceTemplate() {
             document.getElementById("abc").value = `X: 1
-T: [Template]
+T: [SingleVoiceTemplate]
+L:1/4
+M:4/4
+Q:1/4=90
+K:C
+% 1
+x4|x4|x4|x4|
+% 5
+x4|x4|x4|x4|
+`
+            render();
+        }
+
+
+
+        function renderChoirTemplate() {
+            document.getElementById("abc").value = `X: 1
+T: [ChoirTemplate]
 L:1/4
 M:4/4
 Q:1/4=90
@@ -323,7 +403,8 @@ K:Gm
             render(false);
         };
         
-        document.getElementById("TemplateButton").onclick = renderTemplate;
+        document.getElementById("SingleVoiceTemplateButton").onclick = renderSingleVoiceTemplate;
+        document.getElementById("ChoirTemplateButton").onclick = renderChoirTemplate;
         document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
         document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
         document.getElementById("exampleChoirButton").onclick = renderChoir;
@@ -367,8 +448,9 @@ def analysis_strings_to_string(analysis_abc_strings, a, hs, sf, dod):
 
 
 input = js.lines.to_py()
+start_harmonic_state = js.start_harmonic_state
 
-analysis_abc_strings, informations, error = get_analyzed_abc_strings(input)
+analysis_abc_strings, informations, error = get_analyzed_abc_strings(input, start_harmonic_state)
 
 js.analysis_abc_string = analysis_strings_to_string(analysis_abc_strings, js.a, js.hs, js.sf, js.dod)
 
@@ -391,56 +473,5 @@ else:
         document.getElementById("analyzeButton").onclick = () => {
             render(true);
         };
-    </script><br><br><div class="bg-amber-50 text-amber-950">
-        <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one octave.</p>
-        <br>
-        <h2 class="text-4xl">Harmonic States</h2>
-    <p>A <strong>Harmonic State</strong> is an extension of the concept of a "key" in music. Typically, a "key" represents the single, clear tonal center that a listener perceives. A harmonic state, however, allows for situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, harmonic states always relate to the perception of one or more simultaneous keys.</p>
-    
-    <h2 class="text-4xl">The Sauterian Formula</h2>
-    <p>The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a harmonic state. Here’s how it works:</p>
-    
-    <h3 class="text-2xl">Basic Structure</h3>
-    <ul>
-        <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant (S)</strong>, and <strong>Dominant (D)</strong> within a key.</li>
-        <li>For example: <code>T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st and 3rd of the dominant, and the 1st of the subdominant.</li>
-    </ul>
-    
-    <h3 class="text-2xl">Special Cases</h3>
-    <ul>
-        <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code>/</code>.</li>
-        <li><strong>Ambiguous Keys:</strong> If the harmonic state involves multiple keys, we write <code>ind.</code> (short for "indeterminate").</li>
-        <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant chords are called <em>atonal tones</em>. These are listed as pitch classes after an <code>A</code>. For example, <code>T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two atonal notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.</li>
-    </ul>
-    
-    <h3 class="text-2xl">Simplification Rule</h3>
-    <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we simplify the formula by only listing it with the chord that creates the <strong>least dissonance</strong>. For instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
-    
-    <h2 class="text-4xl">Degrees of Dissonance</h2>
-    <p>In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic, subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal notes present in the harmony. The levels progress continuously from least dissonant to most dissonant:</p>
-    
-    <ul>
-        <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic, subdominant, or dominant). This is the most stable and pleasant sound.</li>
-        <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds consonant but only fits as such in a different key. For example, the chord a-minor (<code>T13S3</code>) in the key of C major creates a false consonance.</li>
-        <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and subdominant or tonic and dominant. This is mild dissonance.</li>
-        <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant chords. This is more dissonant than "low."</li>
-        <li><strong>High Dissonance (<code>high</code>):</strong> Notes come from all three chords (tonic, subdominant, and dominant). This is the most complex type of tonal dissonance.</li>
-        <li><strong>Atonality (<code>A1</code>, <code>A2</code>, ...):</strong> If the harmony includes notes that do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal harmonies are even more dissonant than "high" dissonance. For example:
-            <ul>
-                <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
-                <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest degree of dissonance.</li>
-            </ul>
-        </li>
-    </ul>
-    
-    <p>As the levels of dissonance rise from <code>con</code> (consonance) to <code>A5</code> (most dissonant), the harmony becomes progressively more complex and tense.</p>
-    
-    <h2 class="text-4xl">Summary of Notation</h2>
-    <ul>
-        <li><code>/</code>: A rest (silence).</li>
-        <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
-        <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
-        <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies with pitch classes listed, where increasing numbers indicate higher dissonance.</li>
-    </ul>
-    </div>
+    </script>
 	</body></html>
