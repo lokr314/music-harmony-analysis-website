@@ -5,11 +5,6 @@ pipelines:
   custom:
     build-and-deploy-sftp:
       - step:
-          name: Build the Astro Project
-          script:
-            - npm install
-            - npm run build
-      - step:
           name: Remove old distribution
           script:
             - pipe: atlassian/ssh-run:0.2.4
