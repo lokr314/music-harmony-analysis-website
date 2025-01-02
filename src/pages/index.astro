@@ -1,18 +1,32 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import "../styles/global.css"
+import Hero from "../modules/Hero.astro"
+import bgImage from "../images/pexels-pavel-danilyuk-7521287.jpg"
 ---
 
 <Layout title="Music Harmony Analysis Tool">
-    <p>Page loading and first analyzing could take some time, additional software is required to load...</p>
-    <div class="flex justify-center items-center h-96 bg-amber-100">
-        <div class="flex flex-col justify-center items-center">
-            <h1 class="text-6xl font-bold">Analyze the harmonic structure of music</h1>
+    <Hero bgImage={bgImage}
+          title="Find interesting modulations,<br/> with confidence."
+          subtitle="Use fitting, interesting melodical modulations in your music with our proven analytics of harmonics."
+    >
+        <div class="ctas flex flex-col" slot="ctas">
+            <a class="button" href="#how-it-works"/>
         </div>
-    </div>
-    <p>My bachelor thesis, which explains the music theory this program is based on, can be found here: <a href="bachelor-thesis.pdf" download="Louis-Krüger-Bachelor-Thesis.pdf">Download pdf</a></p>
-    <br/>
-    <textarea name="abc" id="abc" cols="80" rows="15" class="border border-amber-950 bg-amber-50 text-amber-950">X: 1
+    </Hero>
+    <section class="py-12 w-full px-8
+        md:max-w-screen-sm md:px-0 md:mx-auto
+        lg:max-w-screen-md
+        xl:max-w-screen-lg
+        2xl:max-w-screen-xl
+        prose"">
+            <h2>Analyze the harmonic structure of music</h2>
+
+        <p>My bachelor thesis, which explains the music theory this program is based on, can be found here: <a
+                href="bachelor-thesis.pdf" download="Louis-Krüger-Bachelor-Thesis.pdf">Download pdf</a></p>
+        <br/>
+        <textarea name="abc"
+                  id="abc" cols="80" rows="15"
+                  class="border border-stone-500 p-4 bg-white text-stone-950 font-mono">X: 1
 T: Tristan Prelude
 L:1/8
 M:6/8
@@ -26,318 +40,376 @@ V:B bass octave=-2
 [V:A] (A, | F3-F2 E | ^D6 | =D3-)D zz |
 [V:B] z | z6 | ([fb]6 | [e^g]3-)[e^g] zz |
     </textarea>
-    <p class="text-sm">A good overview about the abc music notation standard can be found using the help button here: <a href="https://editor.drawthedots.com/">https://editor.drawthedots.com/</a>.<br/>
-        The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a></p>
-    <br/>
-    <label for="start_harmonic_state">Start Harmonic State</label>
-    <br/>
-    <input id="start_harmonic_state" type="text" placeholder="[All]" value="[All]" class="bg-amber-50 border border-amber-50 text-amber-950 text-sm rounded-lg focus:ring-amber-950 focus:border-amber-950 block w-full p-2.5 placeholder-amber-100 dark:bg-amber-950 dark:border-amber-950 dark:placeholder-amber-100 dark:text-amber-50 dark:focus:ring-amber-50 dark:focus:border-amber-50"/>
-    <br/>
-    <button id="renderButton" class="btn my-4 mr-4">
-        Render
-    </button>
+        <p>A good overview about the abc music notation standard can be found using the help button
+            here: <a
+                    href="https://editor.drawthedots.com/">https://editor.drawthedots.com/</a>.<br/>
+            The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a>
+        </p>
+        <br/>
+        <label for="start_harmonic_state">Start Harmonic State</label>
+        <br/>
+        <input id="start_harmonic_state" type="text" placeholder="[All]" value="[All]"
+               class="border border-stone-50 text-stone-950 text-sm rounded-lg focus:ring-blue-950
+               focus:border-blue-950 block w-full p-2.5 placeholder-stone-100
+               dark:bg-stone-950 dark:border-stone-950 dark:placeholder-stone-100 dark:text-stone-50 dark:focus:ring-stone-50 dark:focus:border-stone-50"/>
+        <br/>
+        <button id="renderButton"
+                class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Render
+        </button>
 
-    <button id="analyzeButton" class="btn my-4 mr-4">
-        Analyze
-    </button>
-    <br/>
+        <button id="analyzeButton"
+                class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Analyze
+        </button>
+        <br/>
 
-    <hr />
-    <div id="audio"></div>
-    <div id="warnings"></div>
-    <div class="w-full"> 
-        <div id="paper0" class="bg-amber-50 text-amber-950 min-w-fit"></div>
-    </div>
-    <div id="selection"></div>
-    <div id="informations" class="bg-sky-50"></div>
-    <div id="play"></div>
-    <div id="analysisabc"></div>
-    <div id="input" class="bg-green-300"></div>
+        <hr/>
+        <div id="audio"></div>
+        <div id="warnings"></div>
+        <div class="w-full">
+            <div id="paper0" class="bg-stone-50 text-stone-950 min-w-fit"></div>
+        </div>
+        <div id="selection"></div>
+        <div id="informations" class="bg-sky-50"></div>
+        <div id="play"></div>
+        <div id="analysisabc"></div>
+        <div id="input" class="bg-green-300"></div>
 
-    <br/>
+        <br/>
 
-    <button type="button" id="a" class="w-10 h-5 bg-lime-400 mt-4"></button>
-    <label for="a"> Analysis</label><br>
-    <button type="button" id="hs" class="w-10 h-5 bg-lime-400"></button>
-    <label for="hs"> Harmonic States</label><br>
-    <button type="button" id="sf" class="w-10 h-5 bg-lime-400"></button>
-    <label for="sf"> Sauterian Formula</label><br>
-    <button type="button" id="dod" class="w-10 h-5 bg-lime-400 mb-4"></button>
-    <label for="dod"> Degree of Dissonance</label><br>
+        <button type="button" id="a" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
+        <label for="a"> Analysis</label><br>
+        <button type="button" id="hs" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
+        <label for="hs"> Harmonic States</label><br>
+        <button type="button" id="sf" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
+        <label for="sf"> Sauterian Formula</label><br>
+        <button type="button" id="dod" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
+        <label for="dod"> Degree of Dissonance</label><br>
 
-    <br/>
+        <br/>
 
-    <p class="text-amber-950">Examples:</p>
+        <p class="text-stone-950">Examples:</p>
 
-    <button id="SingleVoiceTemplateButton" class="btn my-4 mr-4">
-        Single Voice Template
-    </button>
+        <button id="SingleVoiceTemplateButton" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Single Voice Template
+        </button>
 
-    <button id="ChoirTemplateButton" class="btn my-4 mr-4">
-        Choir Template
-    </button>
+        <button id="ChoirTemplateButton" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Choir Template
+        </button>
 
-    <br/>
+        <br/>
 
-    <button id="exampleTristanChordButton" class="btn my-4 mr-4">
-        Tristan Chord
-    </button>
+        <button id="exampleTristanChordButton" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Tristan Chord
+        </button>
 
-    <button id="exampleSimpleMelodyButton" class="btn my-4 mr-4">
-        Simple Melody
-    </button>
+        <button id="exampleSimpleMelodyButton" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Simple Melody
+        </button>
 
-    <button id="exampleChoirButton" class="btn my-4 mr-4">
-        Choir
-    </button>
+        <button id="exampleChoirButton" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4">
+            Choir
+        </button>
 
-    <br />
-    <br />
-    <div class="bg-amber-50 text-amber-950">
-        <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one octave.</p>
-        <br />
-        <h2 class="text-4xl">Harmonic States</h2>
-    <p>A <strong>Harmonic State</strong> is an extension of the concept of a "key" in music. Typically, a "key" represents the single, clear tonal center that a listener perceives. A harmonic state, however, allows for situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, harmonic states always relate to the perception of one or more simultaneous keys.</p>
-    
-    <h2 class="text-4xl">The Sauterian Formula</h2>
-    <p>The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a harmonic state. Here’s how it works:</p>
-    
-    <h3 class="text-2xl">Basic Structure</h3>
-    <ul>
-        <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant (S)</strong>, and <strong>Dominant (D)</strong> within a key.</li>
-        <li>For example: <code>T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st and 3rd of the dominant, and the 1st of the subdominant.</li>
-    </ul>
-    
-    <h3 class="text-2xl">Special Cases</h3>
-    <ul>
-        <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code>/</code>.</li>
-        <li><strong>Ambiguous Keys:</strong> If the harmonic state involves multiple keys, we write <code>ind.</code> (short for "indeterminate").</li>
-        <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant chords are called <em>atonal tones</em>. These are listed as pitch classes after an <code>A</code>. For example, <code>T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two atonal notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.</li>
-    </ul>
-    
-    <h3 class="text-2xl">Simplification Rule</h3>
-    <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we simplify the formula by only listing it with the chord that creates the <strong>least dissonance</strong>. For instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
-    
-    <h2 class="text-4xl">Degrees of Dissonance</h2>
-    <p>In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic, subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal notes present in the harmony. The levels progress continuously from least dissonant to most dissonant:</p>
-    
-    <ul>
-        <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic, subdominant, or dominant). This is the most stable and pleasant sound.</li>
-        <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds consonant but only fits as such in a different key. For example, the chord a-minor (<code>T13S3</code>) in the key of C major creates a false consonance.</li>
-        <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and subdominant or tonic and dominant. This is mild dissonance.</li>
-        <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant chords. This is more dissonant than "low."</li>
-        <li><strong>High Dissonance (<code>high</code>):</strong> Notes come from all three chords (tonic, subdominant, and dominant). This is the most complex type of tonal dissonance.</li>
-        <li><strong>Atonality (<code>A1</code>, <code>A2</code>, ...):</strong> If the harmony includes notes that do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal harmonies are even more dissonant than "high" dissonance. For example:
+        <br/>
+        <br/>
+        <div class="bg-stone-50 text-stone-950">
+            <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one
+                octave.</p>
+            <br/>
+            <h2 class="text-4xl">Harmonic States</h2>
+            <p>A <strong>Harmonic State</strong> is an extension of the concept of a "key" in music. Typically, a "key"
+                represents the single, clear tonal center that a listener perceives. A harmonic state, however, allows
+                for
+                situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, harmonic
+                states always relate to the perception of one or more simultaneous keys.</p>
+
+            <h2 class="text-4xl">The Sauterian Formula</h2>
+            <p>The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a harmonic
+                state.
+                Here’s how it works:</p>
+
+            <h3 class="text-2xl">Basic Structure</h3>
             <ul>
-                <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
-                <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest degree of dissonance.</li>
+                <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant
+                    (S)</strong>, and <strong>Dominant (D)</strong> within a key.
+                </li>
+                <li>For example: <code>T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st
+                    and
+                    3rd of the dominant, and the 1st of the subdominant.
+                </li>
             </ul>
-        </li>
-    </ul>
-    
-    <p>As the levels of dissonance rise from <code>con</code> (consonance) to <code>A5</code> (most dissonant), the harmony becomes progressively more complex and tense.</p>
-    
-    <h2 class="text-4xl">Summary of Notation</h2>
-    <ul>
-        <li><code>/</code>: A rest (silence).</li>
-        <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
-        <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
-        <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies with pitch classes listed, where increasing numbers indicate higher dissonance.</li>
-    </ul>
-    </div>
+
+            <h3 class="text-2xl">Special Cases</h3>
+            <ul>
+                <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code>/</code>.</li>
+                <li><strong>Ambiguous Keys:</strong> If the harmonic state involves multiple keys, we write
+                    <code>ind.</code> (short for "indeterminate").
+                </li>
+                <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant
+                    chords
+                    are called <em>atonal tones</em>. These are listed as pitch classes after an <code>A</code>. For
+                    example, <code>T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two
+                    atonal
+                    notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.
+                </li>
+            </ul>
+
+            <h3 class="text-2xl">Simplification Rule</h3>
+            <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we
+                simplify
+                the formula by only listing it with the chord that creates the <strong>least dissonance</strong>. For
+                instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
+
+            <h2 class="text-4xl">Degrees of Dissonance</h2>
+            <p>In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic,
+                subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal
+                notes
+                present in the harmony. The levels progress continuously from least dissonant to most dissonant:</p>
+
+            <ul>
+                <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic,
+                    subdominant, or dominant). This is the most stable and pleasant sound.
+                </li>
+                <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds
+                    consonant but only fits as such in a different key. For example, the chord a-minor
+                    (<code>T13S3</code>)
+                    in the key of C major creates a false consonance.
+                </li>
+                <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and
+                    subdominant or tonic and dominant. This is mild dissonance.
+                </li>
+                <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant
+                    chords. This is more dissonant than "low."
+                </li>
+                <li><strong>High Dissonance (<code>high</code>):</strong> Notes come from all three chords (tonic,
+                    subdominant, and dominant). This is the most complex type of tonal dissonance.
+                </li>
+                <li><strong>Atonality (<code>A1</code>, <code>A2</code>, ...):</strong> If the harmony includes notes
+                    that
+                    do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal
+                    harmonies are even more dissonant than "high" dissonance. For example:
+                    <ul>
+                        <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
+                        <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest
+                            degree
+                            of dissonance.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p>As the levels of dissonance rise from <code>con</code> (consonance) to <code>A5</code> (most dissonant),
+                the
+                harmony becomes progressively more complex and tense.</p>
+
+            <h2 class="text-4xl">Summary of Notation</h2>
+            <ul>
+                <li><code>/</code>: A rest (silence).</li>
+                <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
+                <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
+                <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies with pitch classes listed, where increasing
+                    numbers indicate higher dissonance.
+                </li>
+            </ul>
+        </div>
+
+    </section>
 
     <script type="text/javascript" is:inline>
 
-        var a = true;
-        var hs = true;
-        var sf = true;
-        var dod = true;
+      var a = true;
+      var hs = true;
+      var sf = true;
+      var dod = true;
 
-        document.getElementById("a").onclick = () => {
-            a = !a;
-            if (a) {
-                document.getElementById("a").style.background = "rgb(163 230 53)";
-                if (hs) {
-                    document.getElementById("hs").style.background = "rgb(163 230 53)";
-                }
-                if (sf) {
-                    document.getElementById("sf").style.background = "rgb(163 230 53)";
-                }
-                if (dod) {
-                    document.getElementById("dod").style.background = "rgb(163 230 53)";
-                }
-            } else {
-                document.getElementById("a").style.background = "rgb(251 113 133)";
-                document.getElementById("hs").style.background = "rgb(251 113 133)";
-                document.getElementById("sf").style.background = "rgb(251 113 133)";
-                document.getElementById("dod").style.background = "rgb(251 113 133)";
-            }
-            render(true);
-        };
-        document.getElementById("hs").onclick = () => {
-            hs = !hs;
-            if (hs && a) {
-                document.getElementById("hs").style.background = "rgb(163 230 53)";
-            } else {
-                document.getElementById("hs").style.background = "rgb(251 113 133)";
-            }
-            render(true);
-        };
-        document.getElementById("sf").onclick = () => {
-            sf = !sf;
-            if (sf && a) {
-                document.getElementById("sf").style.background = "rgb(163 230 53)";
-            } else {
-                document.getElementById("sf").style.background = "rgb(251 113 133)";
-            }
-            render(true);
-        };
-        document.getElementById("dod").onclick = () => {
-            dod = !dod;
-            if (dod && a) {
-                document.getElementById("dod").style.background = "rgb(163 230 53)";
-            } else {
-                document.getElementById("dod").style.background = "rgb(251 113 133)";
-            }
-            render(true);
-        };
-
-        var start_harmonic_state;
-
-        var visualObj;
-        var lines;
-        var abcString;
-        var analysis_abc_string;
-
-        if (ABCJS.synth.supportsAudio()) {
-            console.log("Audio is supported.");
+      document.getElementById("a").onclick = () => {
+        a = !a;
+        if (a) {
+          document.getElementById("a").style.background = "rgb(163 230 53)";
+          if (hs) {
+            document.getElementById("hs").style.background = "rgb(163 230 53)";
+          }
+          if (sf) {
+            document.getElementById("sf").style.background = "rgb(163 230 53)";
+          }
+          if (dod) {
+            document.getElementById("dod").style.background = "rgb(163 230 53)";
+          }
         } else {
-            console.log("Audio is not supported.");
+          document.getElementById("a").style.background = "rgb(251 113 133)";
+          document.getElementById("hs").style.background = "rgb(251 113 133)";
+          document.getElementById("sf").style.background = "rgb(251 113 133)";
+          document.getElementById("dod").style.background = "rgb(251 113 133)";
         }
-        var audioParams = { chordsOff: true };
-        var renderParams = {
-            responsive: 'resize',
-            viewportHorizontal: true,
-            scrollHorizontal: true,
-            staffwidth: document.getElementById("paper0").clientWidth -100,
-            paddingleft: 50,
-            paddingright: 50,
-            scale: 0.9,
-        };
-        var synthControl = new ABCJS.synth.SynthController();
-	    synthControl.load("#audio", 
-            {}, 
-            {
-                displayLoop: false, 
-                displayRestart: true, 
-                displayPlay: true, 
-                displayProgress: true, 
-                displayWarp: true
+        render(true);
+      };
+      document.getElementById("hs").onclick = () => {
+        hs = !hs;
+        if (hs && a) {
+          document.getElementById("hs").style.background = "rgb(163 230 53)";
+        } else {
+          document.getElementById("hs").style.background = "rgb(251 113 133)";
+        }
+        render(true);
+      };
+      document.getElementById("sf").onclick = () => {
+        sf = !sf;
+        if (sf && a) {
+          document.getElementById("sf").style.background = "rgb(163 230 53)";
+        } else {
+          document.getElementById("sf").style.background = "rgb(251 113 133)";
+        }
+        render(true);
+      };
+      document.getElementById("dod").onclick = () => {
+        dod = !dod;
+        if (dod && a) {
+          document.getElementById("dod").style.background = "rgb(163 230 53)";
+        } else {
+          document.getElementById("dod").style.background = "rgb(251 113 133)";
+        }
+        render(true);
+      };
+
+      var start_harmonic_state;
+
+      var visualObj;
+      var lines;
+      var abcString;
+      var analysis_abc_string;
+
+      if (ABCJS.synth.supportsAudio()) {
+        console.log("Audio is supported.");
+      } else {
+        console.log("Audio is not supported.");
+      }
+      var audioParams = {chordsOff: true};
+      var renderParams = {
+        responsive: 'resize',
+        viewportHorizontal: true,
+        scrollHorizontal: true,
+        staffwidth: document.getElementById("paper0").clientWidth - 100,
+        paddingleft: 50,
+        paddingright: 50,
+        scale: 0.9,
+      };
+      var synthControl = new ABCJS.synth.SynthController();
+      synthControl.load("#audio",
+        {},
+        {
+          displayLoop: false,
+          displayRestart: true,
+          displayPlay: true,
+          displayProgress: true,
+          displayWarp: true
+        }
+      );
+      var createSynth = new ABCJS.synth.CreateSynth();
+
+      function truncate_lines(lines) {
+        for (var i = 0; i < lines.length; i++) {
+          //console.log(lines[i]);
+          //delete lines[i].staffGroup;
+          for (var j = 0; j < lines[i].staff.length; j++) {
+            //console.log(lines[i].staff[j]);
+            if ('meter' in lines[i].staff[j]) {
+              delete lines[i].staff[j].meter.abselem;
             }
+            delete lines[i].staff[j].clef.abselem;
+            delete lines[i].staff[j].clef.clefPos;
+            delete lines[i].staff[j].clef.verticalPos;
+            delete lines[i].staff[j].key.abselem;
+            for (var k = 0; k < lines[i].staff[j].voices.length; k++) {
+              //console.log(lines[i].staff[j].voices[k]);
+              for (var l = 0; l < lines[i].staff[j].voices[k].length; l++) {
+                //console.log(lines[i].staff[j].voices[k][l]);
+                delete lines[i].staff[j].voices[k][l].abselem;
+                delete lines[i].staff[j].voices[k][l].endChar;
+                delete lines[i].staff[j].voices[k][l].startChar;
+              }
+            }
+          }
+        }
+        return lines;
+      }
+
+
+      //analyze is a boolean, true if you want to analyze
+      function render(analyze) {
+        abcString = document.getElementById("abc").value;
+        //console.log(abcString);
+        visualObj = ABCJS.renderAbc("paper0", abcString, renderParams);
+
+        console.log(visualObj);
+
+        synthControl.pause();
+        synthControl.restart();
+        synthControl.disable();
+        createSynth.stop();
+
+        synthControl = new ABCJS.synth.SynthController();
+        synthControl.load("#audio",
+          {},
+          {
+            displayLoop: false,
+            displayRestart: true,
+            displayPlay: true,
+            displayProgress: true,
+            displayWarp: true
+          }
         );
-        var createSynth = new ABCJS.synth.CreateSynth();
+        createSynth = new ABCJS.synth.CreateSynth();
 
-        function truncate_lines(lines) {
-            for (var i = 0; i < lines.length; i++) {
-                //console.log(lines[i]);
-                //delete lines[i].staffGroup;
-                for (var j = 0; j < lines[i].staff.length; j++) {
-                    //console.log(lines[i].staff[j]);
-                    if ('meter' in lines[i].staff[j]) {
-                        delete lines[i].staff[j].meter.abselem;
-                    }
-                    delete lines[i].staff[j].clef.abselem;
-                    delete lines[i].staff[j].clef.clefPos;
-                    delete lines[i].staff[j].clef.verticalPos;
-                    delete lines[i].staff[j].key.abselem;
-                    for (var k = 0; k < lines[i].staff[j].voices.length; k++) {
-                        //console.log(lines[i].staff[j].voices[k]);
-                        for (var l = 0; l < lines[i].staff[j].voices[k].length; l++) {
-                            //console.log(lines[i].staff[j].voices[k][l]);
-                            delete lines[i].staff[j].voices[k][l].abselem;
-                            delete lines[i].staff[j].voices[k][l].endChar;
-                            delete lines[i].staff[j].voices[k][l].startChar;
-                        }
-                    }
-                } 
+
+        createSynth.init({visualObj: visualObj[0]}).then(function () {
+          synthControl.setTune(visualObj[0], false, audioParams).then(function () {
+            console.log("Audio successfully loaded.")
+          }).catch(function (error) {
+            console.warn("Audio problem:", error);
+          }).then(function () {
+
+            if (analyze) {
+              linesWithStaffGroup = visualObj[0].lines;
+
+              //console.log(linesWithStaffGroup);
+              truncate_lines(linesWithStaffGroup);
+
+              lines = [];
+              for (var i = 0; i < linesWithStaffGroup.length; i++) {
+                lines.push({"staff": linesWithStaffGroup[i].staff});
+              }
+
+              console.log(lines);
+
+              start_harmonic_state = document.getElementById('start_harmonic_state').value
+              if (start_harmonic_state == '') {
+                start_harmonic_state = '[All]'
+              }
+              console.log(start_harmonic_state)
+
+              main().then(() => {
+                console.log("pyodide done");
+                console.log(analysis_abc_string);
+
+                const lines = abcString.split("\n").filter(line => line.trim() !== "");
+                const abcStringWithoutEmptyLines = lines.join("\n");
+                const a = abcStringWithoutEmptyLines + analysis_abc_string;
+
+                ABCJS.renderAbc("paper0", a, renderParams);
+              });
             }
-            return lines;
-        }
+          });
+        }).catch(function (error) {
+          console.warn("Audio problem:", error);
+        });
+      }
 
 
-        //analyze is a boolean, true if you want to analyze
-    	function render(analyze) {
-            abcString = document.getElementById("abc").value;
-            //console.log(abcString);
-            visualObj = ABCJS.renderAbc("paper0", abcString, renderParams);
-
-            console.log(visualObj);
-
-            synthControl.pause();
-            synthControl.restart();
-            synthControl.disable();
-            createSynth.stop();
-
-            synthControl = new ABCJS.synth.SynthController();
-	        synthControl.load("#audio", 
-                {}, 
-                {
-                    displayLoop: false, 
-                    displayRestart: true, 
-                    displayPlay: true, 
-                    displayProgress: true, 
-                    displayWarp: true
-                }
-            );
-            createSynth = new ABCJS.synth.CreateSynth();
-
-            
-            createSynth.init({ visualObj: visualObj[0] }).then(function () {
-        		synthControl.setTune(visualObj[0], false, audioParams).then(function () {
-        			console.log("Audio successfully loaded.")
-        		}).catch(function (error) {
-        			console.warn("Audio problem:", error);
-        		}).then(function () {
-
-                    if (analyze) {
-        			    linesWithStaffGroup = visualObj[0].lines;
-
-                        //console.log(linesWithStaffGroup);
-                        truncate_lines(linesWithStaffGroup);
-
-                        lines = [];
-                        for (var i = 0; i < linesWithStaffGroup.length; i++) {
-                            lines.push({"staff": linesWithStaffGroup[i].staff});
-                        }
-
-                        console.log(lines);
-
-                        start_harmonic_state = document.getElementById('start_harmonic_state').value
-                        if (start_harmonic_state == '') {
-                            start_harmonic_state = '[All]'
-                        }
-                        console.log(start_harmonic_state)
-
-                        main().then(() => {
-                            console.log("pyodide done");
-                            console.log(analysis_abc_string);
-
-                            const lines = abcString.split("\n").filter(line => line.trim() !== "");
-                            const abcStringWithoutEmptyLines = lines.join("\n");
-                            const a = abcStringWithoutEmptyLines + analysis_abc_string;
-
-                            ABCJS.renderAbc("paper0", a, renderParams);
-                        });
-                    }
-                });     
-        	}).catch(function (error) {
-        		console.warn("Audio problem:", error);
-        	});
-    	}
-
-
-        function renderSingleVoiceTemplate() {
-            document.getElementById("abc").value = `X: 1
+      function renderSingleVoiceTemplate() {
+        document.getElementById("abc").value = `X: 1
 T: [SingleVoiceTemplate]
 L:1/4
 M:4/4
@@ -348,13 +420,12 @@ x4|x4|x4|x4|
 % 5
 x4|x4|x4|x4|
 `
-            render();
-        }
+        render();
+      }
 
 
-
-        function renderChoirTemplate() {
-            document.getElementById("abc").value = `X: 1
+      function renderChoirTemplate() {
+        document.getElementById("abc").value = `X: 1
 T: [ChoirTemplate]
 L:1/4
 M:4/4
@@ -376,11 +447,11 @@ K:C
 [V:T]       x4      |     x4    |      x4     |    x4   |
 [V:B]       x4      |     x4    |      x4     |    x4   |
 `
-            render();
-        }
+        render();
+      }
 
-        function renderTristanChord() {
-            document.getElementById("abc").value = `X: 1
+      function renderTristanChord() {
+        document.getElementById("abc").value = `X: 1
 T: Tristan Prelude
 L:1/8
 M:6/8
@@ -394,11 +465,11 @@ V:B bass octave=-2
 [V:A] (A, | F3-F2 E | ^D6 | =D3-)D zz |
 [V:B] z | z6 | ([fb]6 | [e^g]3-)[e^g] zz |
 `
-            render();
-        }
-        
-        function renderSimpleMelody() {
-            document.getElementById("abc").value = `X: 5
+        render();
+      }
+
+      function renderSimpleMelody() {
+        document.getElementById("abc").value = `X: 5
 T: Bach Minuet 1
 C: J. S. Bach 1685-1750
 M: 3/4
@@ -413,11 +484,11 @@ V:1
  "G" d2  cBA2 |    B2 "D"AB "G"G2 |"C" c4    cB |"D"A6   "^I"|\
  "G" d2  cBAG |"C" e2    cBAG     |"D" F2 ED F2 |"G"G6      :|
 `
-            render();
-        }
+        render();
+      }
 
-        function renderChoir() {
-            document.getElementById("abc").value = `X:1  
+      function renderChoir() {
+        document.getElementById("abc").value = `X:1  
 T:Zocharti Loch  
 C:Louis Lewandowski (1821-1894)  
 M:C
@@ -440,28 +511,28 @@ K:Gm
 [V:B1]  (d2f2 b2e'2) | d'8       | g3g  g4     | H^f6    ||
 [V:B2]       x8      | z2B2 c2d2 | e3e (d2c2)  | H d6    ||
 `
-            render();
-        }
+        render();
+      }
 
 
-        document.getElementById("renderButton").onclick = () => {
-            render(false);
-        };
-        
-        document.getElementById("SingleVoiceTemplateButton").onclick = renderSingleVoiceTemplate;
-        document.getElementById("ChoirTemplateButton").onclick = renderChoirTemplate;
-        document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
-        document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
-        document.getElementById("exampleChoirButton").onclick = renderChoir;
+      document.getElementById("renderButton").onclick = () => {
+        render(false);
+      };
+
+      document.getElementById("SingleVoiceTemplateButton").onclick = renderSingleVoiceTemplate;
+      document.getElementById("ChoirTemplateButton").onclick = renderChoirTemplate;
+      document.getElementById("exampleTristanChordButton").onclick = renderTristanChord;
+      document.getElementById("exampleSimpleMelodyButton").onclick = renderSimpleMelody;
+      document.getElementById("exampleChoirButton").onclick = renderChoir;
 
 
-        //------------- Analyze -----------------
+      //------------- Analyze -----------------
 
-        let initPyodide = loadPyodide();
+      let initPyodide = loadPyodide();
 
-        async function main() {
+      async function main() {
 
-            let python_code = `
+        let python_code = `
 import js
 import micropip
 await micropip.install('music-harmony-analysis')
@@ -507,16 +578,16 @@ else:
     js.document.getElementById("informations").innerHTML = informations
 
 `;
-            
-            let pyodide = await initPyodide;
 
-            await pyodide.loadPackage('micropip');
-            
-            await pyodide.runPythonAsync(python_code);
-        };
+        let pyodide = await initPyodide;
 
-        document.getElementById("analyzeButton").onclick = () => {
-            render(true);
-        };
+        await pyodide.loadPackage('micropip');
+
+        await pyodide.runPythonAsync(python_code);
+      };
+
+      document.getElementById("analyzeButton").onclick = () => {
+        render(true);
+      };
     </script>
 </Layout>
