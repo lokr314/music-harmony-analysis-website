@@ -7,7 +7,7 @@ import bgImage from "../images/pexels-pavel-danilyuk-7521287.jpg"
 <Layout title="Music Harmony Analysis Tool">
     <Hero bgImage={bgImage}
           title="Find interesting modulations,<br/> with confidence."
-          subtitle="Use fitting, interesting melodical modulations in your music with our proven analytics of harmonics."
+          subtitle="Use fitting, interesting melodical modulations in your music with our innovative analytics of harmonics."
     >
         <div class="ctas flex flex-col" slot="ctas">
             <a class="button" href="#how-it-works"/>
@@ -160,7 +160,7 @@ V:B bass octave=-2
             <h3 class="text-2xl">Simplification Rule</h3>
             <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we
                 simplify
-                the formula by only listing it with the chord that creates the <strong>least dissonance</strong>. For
+                the formula by only listing it with the chord that creates the <strong>least dissonance</strong> (see below). For
                 instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
 
             <h2 class="text-4xl">Degrees of Dissonance</h2>
@@ -171,7 +171,7 @@ V:B bass octave=-2
 
             <ul>
                 <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic,
-                    subdominant, or dominant). This is the most stable and pleasant sound.
+                    subdominant, or dominant).
                 </li>
                 <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds
                     consonant but only fits as such in a different key. For example, the chord a-minor
@@ -179,7 +179,7 @@ V:B bass octave=-2
                     in the key of C major creates a false consonance.
                 </li>
                 <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and
-                    subdominant or tonic and dominant. This is mild dissonance.
+                    subdominant or tonic and dominant. This is a mild dissonance.
                 </li>
                 <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant
                     chords. This is more dissonant than "low."
@@ -195,7 +195,7 @@ V:B bass octave=-2
                         <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
                         <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest
                             degree
-                            of dissonance.
+                            of dissonance. Only the harmony with all 12 pitch classes is of this level.
                         </li>
                     </ul>
                 </li>
@@ -205,12 +205,12 @@ V:B bass octave=-2
                 the
                 harmony becomes progressively more complex and tense.</p>
 
-            <h2 class="text-4xl">Summary of Notation</h2>
+            <h3 class="text-2xl">Summary of Notation</h3>
             <ul>
                 <li><code>/</code>: A rest (silence).</li>
                 <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
                 <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
-                <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies with pitch classes listed, where increasing
+                <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies, where increasing
                     numbers indicate higher dissonance.
                 </li>
             </ul>
