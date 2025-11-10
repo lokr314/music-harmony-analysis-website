@@ -6,11 +6,12 @@ import bgImage from "../images/pexels-pavel-danilyuk-7521287.jpg"
 
 <Layout title="Music Harmony Analysis Tool">
     <Hero bgImage={bgImage}
-          title="Find interesting modulations,<br/> with confidence."
-          subtitle="Use fitting, interesting melodical modulations in your music with our innovative analytics of harmonics."
+          title="Curate expressive modulations for your music."
+          subtitle="Browse a rigorously catalogued library of tonal shifts and analyse their harmonic behaviour with intuitive tooling."
     >
-        <div class="ctas flex flex-col" slot="ctas">
-            <a class="button" href="#how-it-works"/>
+        <div class="ctas flex flex-col gap-3 sm:flex-row" slot="ctas">
+            <a class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white shadow transition hover:bg-sky-700" href="/modulations">Browse Modulations</a>
+            <a class="inline-flex items-center justify-center rounded-lg border border-sky-600 px-5 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50" href="#how-it-works">Learn More</a>
         </div>
     </Hero>
     <section class="py-12 w-full px-8
@@ -18,8 +19,8 @@ import bgImage from "../images/pexels-pavel-danilyuk-7521287.jpg"
         lg:max-w-screen-md
         xl:max-w-screen-lg
         2xl:max-w-screen-xl
-        prose"">
-            <h2>Analyze the harmonic structure of music</h2>
+        prose">
+            <h2>Analyse the harmonic structure of music</h2>
 
         <p>My bachelor thesis, which explains the music theory this program is based on, can be found here: <a
                 href="bachelor-thesis.pdf" download="Louis-Krüger-Bachelor-Thesis.pdf">Download pdf</a></p>

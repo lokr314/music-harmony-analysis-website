@@ -1,0 +1,49 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getModulationEntries } from "../../data/modulations";
+
+const modulationEntries = getModulationEntries().map(([id, modulation]) => ({
+	id,
+	modulation,
+	hasExample: id === "28",
+}));
+---
+
+<Layout title="Tonal Modulations Library">
+	<main class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-16 text-stone-900">
+		<header class="space-y-4">
+			<h1 class="text-3xl font-semibold tracking-tight">Tonal Modulation Catalogue</h1>
+			<p class="text-base text-stone-600">
+				This catalogue documents every modulation calculated from the C major and C minor harmonic states. Choose an entry to
+				review its theoretical profile, analyse structural relationships, and attach performance examples.
+			</p>
+		</header>
+
+		<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{modulationEntries.map(({ id, modulation, hasExample }) => (
+				<li class="rounded-lg border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-400 hover:shadow">
+					<a class="flex flex-col gap-2 no-underline" href={`/modulations/${id}`}>
+						<span class="text-lg font-medium text-stone-900">Modulation {id}</span>
+						{hasExample ? (
+							<span class="inline-flex w-fit items-center rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700">
+								Example available
+							</span>
+						) : null}
+						<div class="text-sm text-stone-600">
+							<p>
+								<strong>Start:</strong>{" "}
+								{modulation.start_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
+							</p>
+							<p>
+								<strong>End:</strong>{" "}
+								{modulation.end_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
+							</p>
+						</div>
+						<span class="mt-auto text-sm font-medium text-sky-700">View details →</span>
+					</a>
+				</li>
+			))}
+		</ul>
+	</main>
+</Layout>
+
