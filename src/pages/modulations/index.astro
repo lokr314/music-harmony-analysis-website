@@ -12,11 +12,18 @@ const modulationEntries = getModulationEntries().map(([id, modulation]) => ({
 <Layout title="Tonal Modulations Library">
 	<main class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-16 text-stone-900">
 		<header class="space-y-4">
-			<h1 class="text-3xl font-semibold tracking-tight">Tonal Modulation Catalogue</h1>
+			<h1 class="text-3xl font-semibold tracking-tight">Core Modulation Catalogue</h1>
 			<p class="text-base text-stone-600">
-				This catalogue documents every modulation calculated from the C major and C minor harmonic states. Choose an entry to
-				review its theoretical profile, analyse structural relationships, and attach performance examples.
-			</p>
+				These are the 302 core modulations after my theory. Each other modulation can be assigned to one (but sometimes more) of these basic modulations:
+				<ul>
+					<li>1. There are modulations where removing notes from the pcset does not change the ending keyset. Here we do this until removing any note would change the ending keyset and assign to the resulting core modulation. Sometimes there are multiple core modulations for one modulation(?).
+					<li>2. Modulations from another key instead of C major or C minor: Just transpose everything such that the starting key is C major or C minor. The harmonic character/"feeling" of the modulation is not dependent on absolute pitch heights. (Similar to: A major chord stays a major chord even when transposed - the harmonic character stays the same.)</li>
+				    <li>3. Modulations from a keyset with more than one key. For assigning, we choose the key as starting key which has the most tones in common with one of the possible ending keys. The harmonic indifference before the modulation gets resolved by the modulation. (For some modulations, there are different starting keys which have the least distance to an ending key. In this case, we have an overlapping of multiple core modulations.)</li>
+					<li>4. Atonal modulations: As explained in the theory, atonal modulations are resolved by removing notes from the pcset until we have a tonal pcset. One of these resulting tonal pcsets (the one where one of the possible ending keys has the least distance to one of the starting keys) will be used for assigning (see 3. then). It could be the case that there are multiple such tonal pcsets. In this case, we again might have an overlapping of multiple core modulations.</li>
+				</ul>
+				<br/>
+				(28 has an example):
+ 			</p>
 		</header>
 
 		<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
