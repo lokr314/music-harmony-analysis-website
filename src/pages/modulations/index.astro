@@ -47,6 +47,30 @@ const sortedModulations: ModulationEntry[] = [
 		}),
 ];
 
+// Helper function to sort keys by pitch class (0-11) then quality (dur before moll)
+function sortKeysByPitchClass(keys: string[]): string[] {
+	return keys.sort((a, b) => {
+		const [pcA, qualityA] = a.split("-");
+		const [pcB, qualityB] = b.split("-");
+		const numA = Number(pcA);
+		const numB = Number(pcB);
+		
+		// First sort by pitch class number
+		if (numA !== numB) {
+			return numA - numB;
+		}
+		
+		// Then sort by quality (dur before moll)
+		if (qualityA === "dur" && qualityB === "moll") {
+			return -1;
+		}
+		if (qualityA === "moll" && qualityB === "dur") {
+			return 1;
+		}
+		return 0;
+	});
+}
+
 // Get unique target keys for filter dropdown
 const allTargetKeys = new Set<string>();
 allModulations.forEach(({ modulation }) => {
@@ -54,7 +78,7 @@ allModulations.forEach(({ modulation }) => {
 		allTargetKeys.add(`${pc}-${quality}`);
 	});
 });
-const targetKeysArray = Array.from(allTargetKeys).sort();
+const targetKeysArray = sortKeysByPitchClass(Array.from(allTargetKeys));
 
 // Get unique start keys for filter dropdown
 const allStartKeys = new Set<string>();
@@ -63,7 +87,7 @@ allModulations.forEach(({ modulation }) => {
 		allStartKeys.add(`${pc}-${quality}`);
 	});
 });
-const startKeysArray = Array.from(allStartKeys).sort();
+const startKeysArray = sortKeysByPitchClass(Array.from(allStartKeys));
 ---
 
 <Layout title="Tonal Modulations Library">
@@ -80,6 +104,9 @@ c) Use a chord with fewer notes — one that can also includes the target key as
 d) Build an indirect modulation by chaining multiple modulations through intermediate keys.<br/>
 e) Go back to step 1 and try a different modulation.<br/>
 			</p>
+			<div class="pt-2">
+				<a class="inline-flex items-center justify-center rounded-lg border border-sky-600 px-5 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50 whitespace-nowrap" href="/how-it-works">Learn more about the theory behind this</a>
+			</div>
 		</header>
 
 		<div class="grid gap-6 lg:grid-cols-2">
