@@ -3,56 +3,85 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="How It Works">
-    <section class="px-8 py-16 mx-auto max-w-3xl space-y-8">
+    <main class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16 text-stone-900">
         <header class="space-y-4">
             <h1 class="text-4xl font-semibold text-stone-900">How It Works</h1>
             <p class="text-lg text-stone-600">
-                Learn how the Music Harmony Analysis Tool helps you explore modulations in music.
+                Learn more about the theoretical foundations of the Music Harmony Analysis Tool.
             </p>
         </header>
 
-        <article class="space-y-6 text-stone-700 leading-relaxed">
-            <section class="space-y-3">
-                <h2 class="text-2xl font-semibold text-stone-900">1. Select or Enter Music</h2>
-                <p>
-                    Start in the editor on the homepage by entering music in ABC notation or by choosing one of the
-                    provided templates. The instant preview renders your score so you can confirm pitches and rhythms.
-                </p>
-            </section>
-
-            <section class="space-y-3">
-                <h2 class="text-2xl font-semibold text-stone-900">2. Render the Score</h2>
-                <p>
-                    Click <span class="font-semibold text-sky-700">Render</span> to generate a clean engraving of your music
-                    using ABCJS. The playback controls allow you to hear the selection before analyzing.
-                </p>
-            </section>
-
-            <section class="space-y-3">
-                <h2 class="text-2xl font-semibold text-stone-900">3. Run the Analysis</h2>
-                <p>
-                    Press <span class="font-semibold text-sky-700">Analyze</span> to calculate harmonic states, the
-                    Sauterian formula, and degrees of dissonance. Toggle the individual layers to focus on the details that
-                    matter most for your study.
-                </p>
-            </section>
-
-            <section class="space-y-3">
-                <h2 class="text-2xl font-semibold text-stone-900">4. Interpret the Results</h2>
-                <p>
-                    The analysis overlays appear directly beneath your score. Use them to identify modulation pathways,
-                    inspect ambiguous keys, and compare atonal segments. Reference the glossary on the homepage for a quick
-                    refresher on terminology.
-                </p>
-            </section>
-        </article>
-
-        <footer class="pt-6 border-t border-stone-200 text-stone-600">
-            <p>
-                Ready to explore? Head back to the <a class="text-sky-700 font-semibold hover:underline" href="/">homepage</a>
-                to start analyzing your next progression.
+        <section class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-stone-900 mb-4">Bachelor Thesis</h2>
+            <p class="text-base text-stone-700 mb-4">
+                My bachelor thesis, which explains the music theory this program is based on, can be found here:
             </p>
-        </footer>
-    </section>
+            <a 
+                class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white shadow transition hover:bg-sky-700"
+                href="bachelor-thesis.pdf" 
+                download="Louis-Krüger-Bachelor-Thesis.pdf"
+            >
+                Download PDF
+            </a>
+        </section>
+
+        <section class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold text-stone-900 mb-4">Where do the 302 core modulations come from?</h2>
+            <p class="text-base text-stone-700 mb-6">
+                Each core modulation is a class of modulations. Every other modulation can be mapped to one (and occasionally more) of these fundamental types:
+            </p>
+
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-stone-800">Modulations reducible by note-removal</h3>
+                    <p class="text-base text-stone-700 leading-relaxed">
+                        Sometimes, when notes are removed from the pitch-class set, the ending keyset remains the same. We strip away tones until any further removal would change the ending keyset; the resulting minimal pc-set defines the core modulation.
+                    </p>
+                    <p class="text-base text-stone-700 leading-relaxed italic">
+                        (Certain modulations lead to more than one minimal form — in those cases they correspond to multiple core modulations.)
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-stone-800">Modulations from keys other than C major or C minor</h3>
+                    <p class="text-base text-stone-700 leading-relaxed">
+                        Transpose the entire progression so the starting key becomes C major or C minor. The harmonic "character" of a modulation is invariant under transposition — just as a major triad stays a major triad regardless of absolute pitch.
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-stone-800">Modulations starting from a multi-key keyset</h3>
+                    <p class="text-base text-stone-700 leading-relaxed">
+                        When the starting keyset has more than one possible key, we choose as the starting key the one that shares the largest tone overlap with a candidate ending key. The modulation resolves the harmonic ambiguity.
+                    </p>
+                    <p class="text-base text-stone-700 leading-relaxed italic">
+                        If several starting keys share the same minimal "distance" to an ending key, the modulation overlaps multiple core types.
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-stone-800">Atonal modulations</h3>
+                    <p class="text-base text-stone-700 leading-relaxed">
+                        As explained in the theory: remove tones from the atonal pc-set until it becomes tonal. Among the resulting tonal pc-sets, we pick the one where a possible ending key has the least distance from one of the possible starting keys. Then we use the method from point 3 for assigning to a core modulation.
+                    </p>
+                    <p class="text-base text-stone-700 leading-relaxed italic">
+                        If several tonal reductions satisfy this condition, the modulation might again map to multiple core types.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-stone-200">
+                <p class="text-base text-stone-700 leading-relaxed">
+                    The hope is that this way, we group together modulations that have a very similar harmonic character, so that we can reason about modulations while only considering the core modulations. Else we would have millions of different modulations to consider - and that would be too much to handle.
+                </p>
+            </div>
+        </section>
+
+        <div class="pt-6 border-t border-stone-200">
+            <a class="text-sky-700 font-semibold hover:underline" href="/">
+                ← Back to Homepage
+            </a>
+        </div>
+    </main>
 </Layout>
 

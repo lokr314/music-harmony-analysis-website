@@ -47,7 +47,7 @@ V:B bass octave=-2
             The full documentation is available here: <a href="https://abcnotation.com/wiki/abc:standard:v2.1">https://abcnotation.com/wiki/abc:standard:v2.1</a>
         </p>
         <br/>
-        <label for="start_harmonic_state">Start Harmonic State</label>
+            <label for="start_harmonic_state">Start Keyset</label>
         <br/>
         <input id="start_harmonic_state" type="text" placeholder="[All]" value="[All]"
                class="border border-stone-50 text-stone-950 text-sm rounded-lg focus:ring-blue-950
@@ -82,7 +82,7 @@ V:B bass octave=-2
         <button type="button" id="a" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
         <label for="a"> Analysis</label><br>
         <button type="button" id="hs" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
-        <label for="hs"> Harmonic States</label><br>
+            <label for="hs"> Keysets</label><br>
         <button type="button" id="sf" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
         <label for="sf"> Sauterian Formula</label><br>
         <button type="button" id="dod" class="py-2 px-8 border-stone-300 border bg-white rounded-lg hover:shadow my-4 mr-4"></button>
@@ -119,103 +119,179 @@ V:B bass octave=-2
         <div class="bg-stone-50 text-stone-950">
             <p>The analysis line shows the resulting harmonies of the individual voices, all notes arranged in one
                 octave.</p>
-            <br/>
-            <h2 class="text-4xl">Harmonic States</h2>
-            <p>A <strong>Harmonic State</strong> is an extension of the concept of a "key" in music. Typically, a "key"
-                represents the single, clear tonal center that a listener perceives. A harmonic state, however, allows
-                for
-                situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, harmonic
-                states always relate to the perception of one or more simultaneous keys.</p>
+        </div>
 
-            <h2 class="text-4xl">The Sauterian Formula</h2>
-            <p>The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a harmonic
-                state.
-                Here’s how it works:</p>
+        <div class="my-12 border-t-2 border-stone-300"></div>
 
-            <h3 class="text-2xl">Basic Structure</h3>
-            <ul>
-                <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant
-                    (S)</strong>, and <strong>Dominant (D)</strong> within a key.
-                </li>
-                <li>For example: <code>T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st
-                    and
-                    3rd of the dominant, and the 1st of the subdominant.
-                </li>
-            </ul>
+        <section class="space-y-8">
+            <header class="space-y-4">
+                <h2 class="text-4xl font-semibold text-stone-900">How to Use</h2>
+                <p class="text-lg text-stone-600">
+                    Learn how the Music Harmony Analysis Tool helps you explore modulations in music.
+                </p>
+            </header>
 
-            <h3 class="text-2xl">Special Cases</h3>
-            <ul>
-                <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code>/</code>.</li>
-                <li><strong>Ambiguous Keys:</strong> If the harmonic state involves multiple keys, we write
-                    <code>ind.</code> (short for "indeterminate").
-                </li>
-                <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant
-                    chords
-                    are called <em>atonal tones</em>. These are listed as pitch classes after an <code>A</code>. For
-                    example, <code>T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two
-                    atonal
-                    notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.
-                </li>
-            </ul>
+            <article class="space-y-8 text-stone-700 leading-relaxed">
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-3">1. Select or Enter Music</h3>
+                    <p>
+                        Start in the editor on the homepage by entering music in ABC notation or by choosing one of the
+                        provided templates. The instant preview renders your score so you can confirm pitches and rhythms.
+                    </p>
+                </div>
 
-            <h3 class="text-2xl">Simplification Rule</h3>
-            <p>If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we
-                simplify
-                the formula by only listing it with the chord that creates the <strong>least dissonance</strong> (see below). For
-                instance, <code>T135</code> is used instead of <code>T135D1S5</code>.</p>
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-3">2. Render the Score</h3>
+                    <p>
+                        Click <span class="font-semibold text-sky-700">Render</span> to generate a clean engraving of your music
+                        using ABCJS. The playback controls allow you to hear the selection before analyzing.
+                    </p>
+                </div>
 
-            <h2 class="text-4xl">Degrees of Dissonance</h2>
-            <p>In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic,
-                subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal
-                notes
-                present in the harmony. The levels progress continuously from least dissonant to most dissonant:</p>
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-3">3. Run the Analysis</h3>
+                    <p>
+                        Press <span class="font-semibold text-sky-700">Analyze</span> to calculate keysets, the
+                        Sauterian formula, and degrees of dissonance. Toggle the individual layers to focus on the details that
+                        matter most for your study.
+                    </p>
+                </div>
 
-            <ul>
-                <li><strong>Consonance (<code>con</code>):</strong> All notes belong to a single chord (either tonic,
-                    subdominant, or dominant).
-                </li>
-                <li><strong>False Consonance (<code>fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds
-                    consonant but only fits as such in a different key. For example, the chord a-minor
-                    (<code>T13S3</code>)
-                    in the key of C major creates a false consonance.
-                </li>
-                <li><strong>Low Dissonance (<code>low</code>):</strong> Notes come from two chords: either tonic and
-                    subdominant or tonic and dominant. This is a mild dissonance.
-                </li>
-                <li><strong>Medium Dissonance (<code>med</code>):</strong> Notes come from the subdominant and dominant
-                    chords. This is more dissonant than "low."
-                </li>
-                <li><strong>High Dissonance (<code>high</code>):</strong> Notes come from all three chords (tonic,
-                    subdominant, and dominant). This is the most complex type of tonal dissonance.
-                </li>
-                <li><strong>Atonality (<code>A1</code>, <code>A2</code>, ...):</strong> If the harmony includes notes
-                    that
-                    do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal
-                    harmonies are even more dissonant than "high" dissonance. For example:
-                    <ul>
-                        <li><code>A1</code>: Atonal harmony with one atonal pitch class.</li>
-                        <li><code>A5</code>: Atonal harmony with five atonal pitch classes, representing the highest
-                            degree
-                            of dissonance. Only the harmony with all 12 pitch classes is of this level.
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-3">4. Interpret the Results</h3>
+                    <p>
+                        The analysis overlays appear directly beneath your score. Use them to identify modulation pathways,
+                        inspect ambiguous keys, and compare atonal segments. Reference the glossary below for a quick
+                        refresher on terminology.
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <div class="my-12 border-t-2 border-stone-300"></div>
+
+        <section class="space-y-8">
+            <header class="space-y-4">
+                <h2 class="text-4xl font-semibold text-stone-900">How It Works</h2>
+                <p class="text-lg text-stone-600">
+                    Some of the theoretical concepts behind the analysis tool. <a class="text-sky-700 hover:underline " href="/how-it-works">Learn more</a>
+                </p>
+            </header>
+
+            <article class="space-y-8 text-stone-700 leading-relaxed">
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-4">Keysets</h3>
+                    <p class="mb-4">
+                        A <strong>Keyset</strong> is an extension of the concept of a "key" in music. Typically, a "key"
+                        represents the single, clear tonal center that a listener perceives. A keyset, however, allows
+                        for situations where multiple keys coexist. This creates ambiguity about the "current key." Thus, keysets
+                        always relate to the perception of one or more simultaneous keys.
+                    </p>
+                </div>
+
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-4">The Sauterian Formula</h3>
+                    <p class="mb-4">
+                        The <strong>Sauterian Formula</strong> is a way to describe the chords and notes used in a keyset.
+                        Here's how it works:
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-lg font-semibold text-stone-800 mb-2">Basic Structure</h4>
+                            <ul class="list-disc list-inside space-y-2 ml-2">
+                                <li>The formula shows which notes are taken from the chords of the <strong>Tonic (T)</strong>, <strong>Subdominant
+                                    (S)</strong>, and <strong>Dominant (D)</strong> within a key.
+                                </li>
+                                <li>For example: <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">T35D13S1</code> means the harmony includes the 3rd and 5th of the tonic, the 1st
+                                    and 3rd of the dominant, and the 1st of the subdominant.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-stone-800 mb-2">Special Cases</h4>
+                            <ul class="list-disc list-inside space-y-2 ml-2">
+                                <li><strong>Rests:</strong> A rest (silence) in the music is represented by <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">/</code>.</li>
+                                <li><strong>Ambiguous Keys:</strong> If the keyset involves multiple keys, we write
+                                    <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">ind.</code> (short for "indeterminate").
+                                </li>
+                                <li><strong>Atonal Notes:</strong> Notes that do not belong to the tonic, subdominant, or dominant
+                                    chords are called <em>atonal tones</em>. These are listed as pitch classes after an <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A</code>. For
+                                    example, <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">T35A14</code> means the harmony includes the 3rd and 5th of the tonic, plus two
+                                    atonal notes at pitch classes 1 and 4. 'A' and 'B' are used for pitch classes 10 and 11.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-stone-800 mb-2">Simplification Rule</h4>
+                            <p>
+                                If a note belongs to more than one chord (e.g., it is part of both the tonic and the dominant), we
+                                simplify the formula by only listing it with the chord that creates the <strong>least dissonance</strong> (see below). For
+                                instance, <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">T135</code> is used instead of <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">T135D1S5</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-4">Degrees of Dissonance</h3>
+                    <p class="mb-4">
+                        In this system, <strong>dissonance</strong> is categorized into levels based on how many chords (tonic,
+                        subdominant, dominant) the notes come from - or, for atonal harmonies, based on the number of atonal
+                        notes present in the harmony. The levels progress continuously from least dissonant to most dissonant:
+                    </p>
+
+                    <ul class="list-disc list-inside space-y-3 ml-2">
+                        <li><strong>Consonance (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">con</code>):</strong> All notes belong to a single chord (either tonic,
+                            subdominant, or dominant).
+                        </li>
+                        <li><strong>False Consonance (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">fcon</code>, "Scheinkonsonanz"):</strong> A harmony that sounds
+                            consonant but only fits as such in a different key. For example, the chord a-minor
+                            (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">T13S3</code>)
+                            in the key of C major creates a false consonance.
+                        </li>
+                        <li><strong>Low Dissonance (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">low</code>):</strong> Notes come from two chords: either tonic and
+                            subdominant or tonic and dominant. This is a mild dissonance.
+                        </li>
+                        <li><strong>Medium Dissonance (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">med</code>):</strong> Notes come from the subdominant and dominant
+                            chords. This is more dissonant than "low."
+                        </li>
+                        <li><strong>High Dissonance (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">high</code>):</strong> Notes come from all three chords (tonic,
+                            subdominant, and dominant). This is the most complex type of tonal dissonance.
+                        </li>
+                        <li><strong>Atonality (<code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A1</code>, <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A2</code>, ...):</strong> If the harmony includes notes
+                            that do not belong to any of the tonic, subdominant, or dominant chords, it is <em>atonal</em>. Atonal
+                            harmonies are even more dissonant than "high" dissonance. For example:
+                            <ul class="list-disc list-inside space-y-1 ml-4 mt-2">
+                                <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A1</code>: Atonal harmony with one atonal pitch class.</li>
+                                <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A5</code>: Atonal harmony with five atonal pitch classes, representing the highest
+                                    degree of dissonance. Only the harmony with all 12 pitch classes is of this level.
+                                </li>
+                            </ul>
                         </li>
                     </ul>
-                </li>
-            </ul>
 
-            <p>As the levels of dissonance rise from <code>con</code> (consonance) to <code>A5</code> (most dissonant),
-                the
-                harmony becomes progressively more complex and tense.</p>
+                    <p class="mt-4">
+                        As the levels of dissonance rise from <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">con</code> (consonance) to <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A5</code> (most dissonant),
+                        the harmony becomes progressively more complex and tense.
+                    </p>
+                </div>
 
-            <h3 class="text-2xl">Summary of Notation</h3>
-            <ul>
-                <li><code>/</code>: A rest (silence).</li>
-                <li><code>ind.</code>: An indeterminate harmonic state (multiple keys coexist).</li>
-                <li><code>con</code> to <code>high</code>: Degrees of tonal dissonance (from stable to complex).</li>
-                <li><code>A1</code>, <code>A2</code>, ...: Atonal harmonies, where increasing
-                    numbers indicate higher dissonance.
-                </li>
-            </ul>
-        </div>
+                <div class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
+                    <h3 class="text-2xl font-semibold text-stone-900 mb-4">Summary of Notation</h3>
+                    <ul class="list-disc list-inside space-y-2 ml-2">
+                        <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">/</code>: A rest (silence).</li>
+                        <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">ind.</code>: An indeterminate keyset (multiple keys coexist).</li>
+                        <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">con</code> to <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">high</code>: Degrees of tonal dissonance (from stable to complex).</li>
+                        <li><code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A1</code>, <code class="bg-stone-100 px-1.5 py-0.5 rounded text-sm">A2</code>, ...: Atonal harmonies, where increasing
+                            numbers indicate higher dissonance.
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </section>
 
     </section>
 
@@ -546,7 +622,7 @@ def analysis_strings_to_string(analysis_abc_strings, a, hs, sf, dod):
     - analysis_abc_strings: Dictionary with the following fields:
     - header: String. The header of the abc analysis: '\nL:1\n'.
     - events: List of strings. Format: '[V: Analysis] [CE^^G]1/4 [C_EGB]1/4\n'. ('[V: Analysis name=Analysis snm=A.]' for the first line) Each string represents the harmonies of one line of music.
-    - harmonic_states: List of strings. Format: 'w: [C,Cis,Dm] [C,Cis,Dm]\n'. Each string corresponds to the events of one line.
+    - harmonic_states: List of strings (keysets). Format: 'w: [C,Cis,Dm] [C,Cis,Dm]\n'. Each string corresponds to the events of one line.
     - sauterian_formula: List of strings. Format: 'w: T15D15S3 D35S1A3,11\n'. Each string corresponds to the events of one line.
     - degree_of_dissonance_or_atonal: List of strings. Format: 'w: / low\n'. Each string corresponds to the events of one line.
     """
