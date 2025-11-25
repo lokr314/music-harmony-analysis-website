@@ -1,56 +1,303 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getModulationEntries } from "../../data/modulations";
+import { getModulationEntries, type Modulation } from "../../data/modulations";
 
-const modulationEntries = getModulationEntries().map(([id, modulation]) => ({
-	id,
-	modulation,
-	hasExample: id === "28",
-}));
+type ModulationEntry = {
+	id: string;
+	modulation: Modulation;
+	hasExample: boolean;
+	hasSingleEndKey: boolean;
+	startKeyPitchClass: number;
+	endKeyPitchClass: number;
+};
+
+const allModulations = getModulationEntries().map(([id, modulation]) => {
+	const hasSingleEndKey = modulation.end_keyset.length === 1;
+	const startKeyPitchClass = modulation.start_keyset[0]?.[0] ?? 0;
+	const endKeyPitchClass = modulation.end_keyset[0]?.[0] ?? 0;
+
+	return {
+		id,
+		modulation,
+		hasExample: id === "28",
+		hasSingleEndKey,
+		startKeyPitchClass,
+		endKeyPitchClass,
+	};
+});
+
+// Sort: first group has single end key, second group has multiple
+// Within each group: sort by start key pitch class, then end key pitch class
+const sortedModulations: ModulationEntry[] = [
+	...allModulations
+		.filter((m) => m.hasSingleEndKey)
+		.sort((a, b) => {
+			if (a.startKeyPitchClass !== b.startKeyPitchClass) {
+				return a.startKeyPitchClass - b.startKeyPitchClass;
+			}
+			return a.endKeyPitchClass - b.endKeyPitchClass;
+		}),
+	...allModulations
+		.filter((m) => !m.hasSingleEndKey)
+		.sort((a, b) => {
+			if (a.startKeyPitchClass !== b.startKeyPitchClass) {
+				return a.startKeyPitchClass - b.startKeyPitchClass;
+			}
+			return a.endKeyPitchClass - b.endKeyPitchClass;
+		}),
+];
+
+// Get unique target keys for filter dropdown
+const allTargetKeys = new Set<string>();
+allModulations.forEach(({ modulation }) => {
+	modulation.end_keyset.forEach(([pc, quality]) => {
+		allTargetKeys.add(`${pc}-${quality}`);
+	});
+});
+const targetKeysArray = Array.from(allTargetKeys).sort();
+
+// Get unique start keys for filter dropdown
+const allStartKeys = new Set<string>();
+allModulations.forEach(({ modulation }) => {
+	modulation.start_keyset.forEach(([pc, quality]) => {
+		allStartKeys.add(`${pc}-${quality}`);
+	});
+});
+const startKeysArray = Array.from(allStartKeys).sort();
 ---
 
 <Layout title="Tonal Modulations Library">
 	<main class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-16 text-stone-900">
 		<header class="space-y-4">
-			<h1 class="text-3xl font-semibold tracking-tight">Core Modulation Catalogue</h1>
+			<h1 class="text-3xl font-semibold tracking-tight">I'm in key X and want to go to key Y: How can I do that?</h1>
 			<p class="text-base text-stone-600">
-				These are the 302 core modulations after my theory. Each other modulation can be assigned to one (but sometimes more) of these basic modulations:
-				<ul>
-					<li>1. There are modulations where removing notes from the pcset does not change the ending keyset. Here we do this until removing any note would change the ending keyset and assign to the resulting core modulation. Sometimes there are multiple core modulations for one modulation(?).
-					<li>2. Modulations from another key instead of C major or C minor: Just transpose everything such that the starting key is C major or C minor. The harmonic character/"feeling" of the modulation is not dependent on absolute pitch heights. (Similar to: A major chord stays a major chord even when transposed - the harmonic character stays the same.)</li>
-				    <li>3. Modulations from a keyset with more than one key. For assigning, we choose the key as starting key which has the most tones in common with one of the possible ending keys. The harmonic indifference before the modulation gets resolved by the modulation. (For some modulations, there are different starting keys which have the least distance to an ending key. In this case, we have an overlapping of multiple core modulations.)</li>
-					<li>4. Atonal modulations: As explained in the theory, atonal modulations are resolved by removing notes from the pcset until we have a tonal pcset. One of these resulting tonal pcsets (the one where one of the possible ending keys has the least distance to one of the starting keys) will be used for assigning (see 3. then). It could be the case that there are multiple such tonal pcsets. In this case, we again might have an overlapping of multiple core modulations.</li>
-				</ul>
-				<br/>
-				(28 has an example):
- 			</p>
+1. Pick one of the modulations to the target key from the list (or choose a chord from the list of key-defining chords).<br/><br/>
+
+2. If it doesn't sound right:<br/>
+a) Pay attention to voice leading — follow the usual rules (e.g., resolving suspensions, avoiding unnecessary large leaps, etc.).<br/>
+b) Add extra tones from the target key.<br/>
+c) Use a chord with fewer notes — one that can also includes the target key as end key. (Use the numbers listed under "Containing" on a modulation's detail page as links to these modulations, or just browse the list.)<br/>
+d) Build an indirect modulation by chaining multiple modulations through intermediate keys.<br/>
+e) Go back to step 1 and try a different modulation.<br/>
+			</p>
 		</header>
 
-		<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{modulationEntries.map(({ id, modulation, hasExample }) => (
-				<li class="rounded-lg border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-400 hover:shadow">
-					<a class="flex flex-col gap-2 no-underline" href={`/modulations/${id}`}>
-						<span class="text-lg font-medium text-stone-900">Modulation {id}</span>
-						{hasExample ? (
-							<span class="inline-flex w-fit items-center rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700">
-								Example available
-							</span>
-						) : null}
-						<div class="text-sm text-stone-600">
-							<p>
-								<strong>Start:</strong>{" "}
-								{modulation.start_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
-							</p>
-							<p>
-								<strong>End:</strong>{" "}
-								{modulation.end_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
-							</p>
-						</div>
-						<span class="mt-auto text-sm font-medium text-sky-700">View details →</span>
-					</a>
-				</li>
-			))}
+		<div class="grid gap-6 lg:grid-cols-2">
+			<div class="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+				<h2 class="text-lg font-semibold text-stone-900 mb-3">Which number is which tone?</h2>
+				<p class="text-base text-stone-600 font-mono leading-relaxed">	
+					0: C<br/>	
+					1: C#/D♭<br/>
+					2: D<br/>
+					3: D#/E♭<br/>
+					4: E<br/>
+					5: F<br/>
+					6: F#/G♭<br/>	
+					7: G<br/>
+					8: G#/A♭<br/>
+					9: A<br/>
+					10: A#/B♭<br/>
+					11: B<br/>
+				</p>
+			</div>
+
+			<div class="rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
+				<h2 class="text-lg font-semibold text-stone-900 mb-3">Key-Defining Chords</h2>
+				<p class="text-sm text-stone-600 mb-3">A key-defining chord is a chord that can only appear in one key. That means that playing this chord will always lead you to this key, regardless of in which keyset you were before.</p>	
+				<p class="text-sm text-stone-600 mb-3">The following pitch-class sets are the key-defining chords for C major and C minor:</p>
+				<p class="text-base text-stone-600 font-mono leading-relaxed">
+					<strong class="text-stone-900 font-sans">Major (2 chords):</strong><br/>
+					[4, 5, 7, 11]<br/>
+					[5, 7, 10, 11]<br/>
+					<br/>
+					<strong class="text-stone-900 font-sans">Minor (8 chords):</strong><br/>
+					[2, 3, 7, 11]<br/>
+					[0, 3, 8, 11]<br/>
+					[3, 5, 7, 11]<br/>
+					[0, 2, 3, 11]<br/>
+					[5, 7, 8, 11]<br/>
+					[0, 7, 8, 11]<br/>
+					[2, 7, 8, 11]<br/>
+					[0, 3, 5, 11]<br/>
+				</p>
+			</div>
+		</div>
+	
+
+		<div class="space-y-4">
+			<div class="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+				<label class="flex items-center gap-2 cursor-pointer">
+					<input
+						type="checkbox"
+						id="hide-unambiguous"
+						checked
+						class="h-4 w-4 rounded border-stone-300 text-sky-600 focus:ring-2 focus:ring-sky-500"
+					/>
+					<span class="text-sm font-medium text-stone-700">
+						Hide modulations with key-defining chord
+					</span>
+				</label>
+			</div>
+			<div class="grid gap-4 sm:grid-cols-2">
+				<div class="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+					<label for="start-filter" class="block text-sm font-medium text-stone-700 mb-2">
+						Filter by start key:
+					</label>
+					<select
+						id="start-filter"
+						class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+					>
+						<option value="">All start keys</option>
+						{startKeysArray.map((keyStr) => {
+							const [pc, quality] = keyStr.split("-");
+							const pitchClassNames = [
+								"C",
+								"C#/D♭",
+								"D",
+								"D#/E♭",
+								"E",
+								"F",
+								"F#/G♭",
+								"G",
+								"G#/A♭",
+								"A",
+								"A#/B♭",
+								"B",
+							];
+							const qualityName = quality === "dur" ? "major" : "minor";
+							return (
+								<option value={keyStr}>
+									{pitchClassNames[Number(pc)]} {qualityName}
+								</option>
+							);
+						})}
+					</select>
+				</div>
+				<div class="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+					<label for="target-filter" class="block text-sm font-medium text-stone-700 mb-2">
+						Filter by target key:
+					</label>
+					<select
+						id="target-filter"
+						class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+					>
+						<option value="">All target keys</option>
+						{targetKeysArray.map((keyStr) => {
+							const [pc, quality] = keyStr.split("-");
+							const pitchClassNames = [
+								"C",
+								"C#/D♭",
+								"D",
+								"D#/E♭",
+								"E",
+								"F",
+								"F#/G♭",
+								"G",
+								"G#/A♭",
+								"A",
+								"A#/B♭",
+								"B",
+							];
+							const qualityName = quality === "dur" ? "major" : "minor";
+							return (
+								<option value={keyStr}>
+									{pitchClassNames[Number(pc)]} {qualityName}
+								</option>
+							);
+						})}
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<ul id="modulations-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{sortedModulations.map(({ id, modulation, hasExample }) => {
+				const endKeysetStr = modulation.end_keyset.map(([pc, quality]) => `${pc}-${quality}`).join(",");
+				const startKeysetStr = modulation.start_keyset.map(([pc, quality]) => `${pc}-${quality}`).join(",");
+				return (
+					<li
+						class="modulation-item rounded-lg border border-stone-200 bg-white p-4 shadow-sm transition hover:border-stone-400 hover:shadow"
+						data-start-keyset={startKeysetStr}
+						data-end-keyset={endKeysetStr}
+						data-unambiguous-pcset={modulation.unambiguous_pcset ? "true" : "false"}
+					>
+						<a class="flex flex-col gap-2 no-underline" href={`/modulations/${id}`}>
+							<span class="text-lg font-medium text-stone-900">Modulation {id}</span>
+							{hasExample ? (
+								<span class="inline-flex w-fit items-center rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700">
+									Example available
+								</span>
+							) : null}
+							<div class="text-sm text-stone-600">
+								<p>
+									<strong>Start:</strong>{" "}
+									{modulation.start_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
+								</p>
+								<p>
+									<strong>End:</strong>{" "}
+									{modulation.end_keyset.map(([pc, quality]) => `${pc} ${quality}`).join(", ") || "—"}
+								</p>
+							</div>
+							<span class="mt-auto text-sm font-medium text-sky-700">View details →</span>
+						</a>
+					</li>
+				);
+			})}
 		</ul>
+
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", () => {
+				const startFilterSelect = document.getElementById("start-filter");
+				const targetFilterSelect = document.getElementById("target-filter");
+				const hideUnambiguousCheckbox = document.getElementById("hide-unambiguous");
+				const modulationItems = Array.from(document.querySelectorAll(".modulation-item"));
+
+				if (!startFilterSelect || !(startFilterSelect instanceof HTMLSelectElement)) return;
+				if (!targetFilterSelect || !(targetFilterSelect instanceof HTMLSelectElement)) return;
+				if (!hideUnambiguousCheckbox || !(hideUnambiguousCheckbox instanceof HTMLInputElement)) return;
+
+				const applyFilters = () => {
+					const selectedStart = startFilterSelect.value;
+					const selectedTarget = targetFilterSelect.value;
+					const hideUnambiguous = hideUnambiguousCheckbox.checked;
+
+					modulationItems.forEach((item) => {
+						if (!(item instanceof HTMLElement)) return;
+						
+						let shouldShow = true;
+
+						// Check unambiguous filter (hide if unambiguous_pcset is true and checkbox is checked)
+						if (hideUnambiguous) {
+							const isUnambiguous = item.dataset.unambiguousPcset === "true";
+							shouldShow = shouldShow && !isUnambiguous;
+						}
+
+						// Check start key filter
+						if (selectedStart) {
+							const startKeyset = item.dataset.startKeyset || "";
+							const hasStart = startKeyset.split(",").includes(selectedStart);
+							shouldShow = shouldShow && hasStart;
+						}
+
+						// Check target key filter
+						if (selectedTarget) {
+							const endKeyset = item.dataset.endKeyset || "";
+							const hasTarget = endKeyset.split(",").includes(selectedTarget);
+							shouldShow = shouldShow && hasTarget;
+						}
+
+						item.style.display = shouldShow ? "" : "none";
+					});
+				};
+
+				// Apply filters on page load (to respect default checkbox state)
+				applyFilters();
+
+				startFilterSelect.addEventListener("change", applyFilters);
+				targetFilterSelect.addEventListener("change", applyFilters);
+				hideUnambiguousCheckbox.addEventListener("change", applyFilters);
+			});
+		</script>
 	</main>
 </Layout>
 
