@@ -1,20 +1,35 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="Analyze harmonies in music - New theory of musical harmony"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width"><link rel="icon" href="/images/Logo.png"><script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script><link href="./abcjs-audio.css" media="all" rel="stylesheet" type="text/css"><link href=""><script src="./abcjs-basic-min.js" type="text/javascript"></script><title>How It Works</title><link rel="stylesheet" href="/_astro/how-it-works.vopbscL8.css"></head> <body class="bg-stone-50">  <section class="px-8 py-16 mx-auto max-w-3xl space-y-8"> <header class="space-y-4"> <h1 class="text-4xl font-semibold text-stone-900">How It Works</h1> <p class="text-lg text-stone-600">
-Learn how the Music Harmony Analysis Tool helps you explore tonal modulations with confidence.
-</p> </header> <article class="space-y-6 text-stone-700 leading-relaxed"> <section class="space-y-3"> <h2 class="text-2xl font-semibold text-stone-900">1. Select or Enter Music</h2> <p>
-Start in the editor on the homepage by entering music in ABC notation or by choosing one of the
-                    provided templates. The instant preview renders your score so you can confirm pitches and rhythms.
-</p> </section> <section class="space-y-3"> <h2 class="text-2xl font-semibold text-stone-900">2. Render the Score</h2> <p>
-Click <span class="font-semibold text-sky-700">Render</span> to generate a clean engraving of your music
-                    using ABCJS. The playback controls allow you to hear the selection before analyzing.
-</p> </section> <section class="space-y-3"> <h2 class="text-2xl font-semibold text-stone-900">3. Run the Analysis</h2> <p>
-Press <span class="font-semibold text-sky-700">Analyze</span> to calculate harmonic states, the
-                    Sauterian formula, and degrees of dissonance. Toggle the individual layers to focus on the details that
-                    matter most for your study.
-</p> </section> <section class="space-y-3"> <h2 class="text-2xl font-semibold text-stone-900">4. Interpret the Results</h2> <p>
-The analysis overlays appear directly beneath your score. Use them to identify modulation pathways,
-                    inspect ambiguous keys, and compare atonal segments. Reference the glossary on the homepage for a quick
-                    refresher on terminology.
-</p> </section> </article> <footer class="pt-6 border-t border-stone-200 text-stone-600"> <p>
-Ready to explore? Head back to the <a class="text-sky-700 font-semibold hover:underline" href="/">homepage</a>
-to start analyzing your next progression.
-</p> </footer> </section>  </body></html>
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="Analyze harmonies in music - New theory of musical harmony"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width"><link rel="icon" href="/images/Logo.png"><script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script><link href="./abcjs-audio.css" media="all" rel="stylesheet" type="text/css"><link href=""><script src="./abcjs-basic-min.js" type="text/javascript"></script><title>How It Works</title><link rel="stylesheet" href="/_astro/how-it-works.D1RIp69b.css"></head> <body class="bg-stone-50"> <header class="sticky top-0 z-50 border-b border-stone-200 bg-white shadow-sm"> <nav class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"> <a href="/" class="flex items-center gap-2 no-underline transition hover:opacity-80"> <img src="/images/Logo.png" alt="Music Harmony Analysis" class="h-8 w-8"> <span class="text-lg font-semibold text-stone-900">Music Harmony Analysis</span> </a> <div class="flex flex-wrap items-center gap-4 sm:gap-6"> <a href="/" class="text-sm font-medium text-stone-700 transition hover:text-sky-700">
+Home
+</a> <a href="/modulations" class="text-sm font-medium text-stone-700 transition hover:text-sky-700">
+Modulations
+</a> <a href="/how-it-works" class="text-sm font-medium text-stone-700 transition hover:text-sky-700">
+How It Works
+</a> <a href="/impressum" class="text-sm font-medium text-stone-700 transition hover:text-sky-700">
+Impressum
+</a> </div> </nav> </header>  <main class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16 text-stone-900"> <header class="space-y-4"> <h1 class="text-4xl font-semibold text-stone-900">How It Works</h1> <p class="text-lg text-stone-600">
+Learn more about the theoretical foundations of the Music Harmony Analysis Tool.
+</p> </header> <section class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm"> <h2 class="text-2xl font-semibold text-stone-900 mb-4">Bachelor Thesis</h2> <p class="text-base text-stone-700 mb-4">
+My bachelor thesis, which explains the music theory this program is based on, can be found here:
+</p> <a class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-5 py-2 text-sm font-semibold text-white shadow transition hover:bg-sky-700" href="bachelor-thesis.pdf" download="Louis-Krüger-Bachelor-Thesis.pdf">
+Download PDF
+</a> </section> <section class="rounded-lg border border-stone-200 bg-white p-6 shadow-sm"> <h2 class="text-2xl font-semibold text-stone-900 mb-4">Where do the 302 core modulations come from?</h2> <p class="text-base text-stone-700 mb-6">
+Each core modulation is a class of modulations. Every other modulation can be mapped to one (and occasionally more) of these fundamental types:
+</p> <div class="space-y-6"> <div class="space-y-2"> <h3 class="text-lg font-semibold text-stone-800">Modulations reducible by note-removal</h3> <p class="text-base text-stone-700 leading-relaxed">
+Sometimes, when notes are removed from the pitch-class set, the ending keyset remains the same. We strip away tones until any further removal would change the ending keyset; the resulting minimal pc-set defines the core modulation.
+</p> <p class="text-base text-stone-700 leading-relaxed italic">
+(Certain modulations lead to more than one minimal form — in those cases they correspond to multiple core modulations.)
+</p> </div> <div class="space-y-2"> <h3 class="text-lg font-semibold text-stone-800">Modulations from keys other than C major or C minor</h3> <p class="text-base text-stone-700 leading-relaxed">
+Transpose the entire progression so the starting key becomes C major or C minor. The harmonic "character" of a modulation is invariant under transposition — just as a major triad stays a major triad regardless of absolute pitch.
+</p> </div> <div class="space-y-2"> <h3 class="text-lg font-semibold text-stone-800">Modulations starting from a multi-key keyset</h3> <p class="text-base text-stone-700 leading-relaxed">
+When the starting keyset has more than one possible key, we choose as the starting key the one that shares the largest tone overlap with a candidate ending key. The modulation resolves the harmonic ambiguity.
+</p> <p class="text-base text-stone-700 leading-relaxed italic">
+If several starting keys share the same minimal "distance" to an ending key, the modulation overlaps multiple core types.
+</p> </div> <div class="space-y-2"> <h3 class="text-lg font-semibold text-stone-800">Atonal modulations</h3> <p class="text-base text-stone-700 leading-relaxed">
+As explained in the theory: remove tones from the atonal pc-set until it becomes tonal. Among the resulting tonal pc-sets, we pick the one where a possible ending key has the least distance from one of the possible starting keys. Then we use the method from point 3 for assigning to a core modulation.
+</p> <p class="text-base text-stone-700 leading-relaxed italic">
+If several tonal reductions satisfy this condition, the modulation might again map to multiple core types.
+</p> </div> </div> <div class="mt-6 pt-6 border-t border-stone-200"> <p class="text-base text-stone-700 leading-relaxed">
+The hope is that this way, we group together modulations that have a very similar harmonic character, so that we can reason about modulations while only considering the core modulations. Else we would have millions of different modulations to consider - and that would be too much to handle.
+</p> </div> </section> <div class="pt-6 border-t border-stone-200"> <a class="text-sky-700 font-semibold hover:underline" href="/">
+← Back to Homepage
+</a> </div> </main>  </body></html>
